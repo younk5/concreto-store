@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F4F1EA">
+  <meta name="description" content="Detalhes do produto e compra pelo WhatsApp.">
+  <meta name="robots" content="index,follow" id="robots-meta">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="">
+  <title>Produto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="header-main">
+      <a class="brand" href="index.html" id="store-name">CONCRETO<span aria-hidden="true">.</span></a>
+      <form class="search" role="search" action="index.html">
+        <label class="sr-only" for="search">buscar por nome</label>
+        <input id="search" name="q" type="search" placeholder="buscar produto" autocomplete="off">
+        <button type="submit" aria-label="buscar">→</button>
+      </form>
+      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">whatsapp <span>↗</span></a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="product-main">
+    <nav class="breadcrumb" aria-label="Você está aqui">
+      <a href="index.html">loja</a>
+      <span>/</span>
+      <span id="breadcrumb-name">produto</span>
+    </nav>
+
+    <div id="product-loading" class="product-loading" aria-hidden="true">
+      <div class="product-loading-media"></div>
+      <div class="product-loading-info">
+        <div class="skeleton-line skeleton-line--short"></div>
+        <div class="skeleton-line skeleton-line--big"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line--short"></div>
+        <div class="skeleton-block"></div>
+      </div>
+    </div>
+
+    <article id="product-view" class="product-detail" hidden>
+      <div class="product-gallery">
+        <img id="product-image" src="" alt="" width="1200" height="1500" loading="lazy">
+      </div>
+
+      <div class="product-panel">
+        <p class="eyebrow" id="product-category"></p>
+        <h1 id="product-name"></h1>
+        <p class="product-price" id="product-price"></p>
+        <p class="product-description" id="product-description"></p>
+
+        <a class="btn btn-buy" id="product-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp</a>
+        <p class="product-note">sem carrinho, sem cadastro. a conversa é direta.</p>
+
+        <div class="product-specs">
+          <div><span>envio</span><strong>até 24h</strong></div>
+          <div><span>troca</span><strong>sem drama</strong></div>
+          <div><span>atendimento</span><strong>humano</strong></div>
+        </div>
+
+        <a class="back-link" href="index.html">← voltar para o drop</a>
+      </div>
+    </article>
+
+    <section id="related-section" class="section related-section" hidden>
+      <div class="section-head">
+        <h2>você também pode gostar</h2>
+        <span class="section-note">mesma energia</span>
+      </div>
+      <div id="related-grid" class="related-grid"></div>
+    </section>
+
+    <section id="not-found" class="state state--404" hidden>
+      <p class="state-code">404</p>
+      <h1>Esse produto vazou.</h1>
+      <p>O link pode estar velho ou o produto saiu do ar. O resto do drop está inteiro.</p>
+      <a class="btn btn--outline" href="index.html">voltar para a loja</a>
+    </section>
+
+    <section id="product-error" class="state" hidden>
+      <p class="state-code">!</p>
+      <h1>Sinal fora do ar.</h1>
+      <p>Não deu para abrir o produto agora. Tenta recarregar.</p>
+      <button class="btn btn--outline" id="reload-product" type="button">recarregar</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="footer-brand" href="index.html" id="footer-name">CONCRETO</a>
+      <p class="footer-note">tech de rua. estoque curto. conversa direta.</p>
+      <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
+    import { getActiveProduct, listActiveProducts } from "./js/api.js";
+
+    const waBase = `https://wa.me/${WHATSAPP_NUMBER}`;
+    const money = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+
+    const loading = document.getElementById("product-loading");
+    const view = document.getElementById("product-view");
+    const notFound = document.getElementById("not-found");
+    const errorState = document.getElementById("product-error");
+    const relatedSection = document.getElementById("related-section");
+    const relatedGrid = document.getElementById("related-grid");
+
+    document.getElementById("store-name").innerHTML = `${esc(STORE_NAME)}<span aria-hidden="true">.</span>`;
+    document.getElementById("footer-name").textContent = STORE_NAME;
+    document.getElementById("header-wa").href = waBase;
+    document.getElementById("footer-wa").href = waBase;
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function setMeta(property, value) {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("property", property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", value);
+    }
+
+    function productHref(product) {
+      return `produto.html?id=${encodeURIComponent(product.id)}`;
+    }
+
+    function whatsappLink(product) {
+      const message = `Olá! Tenho interesse em: ${product.name}. Link: ${location.href}`;
+      return `${waBase}?text=${encodeURIComponent(message)}`;
+    }
+
+    function relatedCard(product) {
+      const href = productHref(product);
+      const price = product.price === null || product.price === undefined
+        ? ""
+        : `<span class="price">${money.format(Number(product.price))}</span>`;
+
+      return `
+        <article class="product-card">
+          <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
+            <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
+            <span class="card-view">ver produto</span>
+          </a>
+          <div class="card-info">
+            <div class="card-text">
+              ${product.category ? `<span class="card-category">${esc(product.category)}</span>` : ""}
+              <h3><a href="${href}">${esc(product.name)}</a></h3>
+            </div>
+            ${price}
+          </div>
+        </article>
+      `;
+    }
+
+    async function renderRelated(product) {
+      try {
+        const products = await listActiveProducts();
+        const related = products
+          .filter((item) => item.id !== product.id)
+          .sort((a, b) => {
+            const sameA = a.category === product.category ? 1 : 0;
+            const sameB = b.category === product.category ? 1 : 0;
+            return sameB - sameA || new Date(b.created_at) - new Date(a.created_at);
+          })
+          .slice(0, 3);
+
+        if (!related.length) return;
+        relatedGrid.innerHTML = related.map(relatedCard).join("");
+        relatedSection.hidden = false;
+      } catch (failure) {
+        console.error(failure);
+      }
+    }
+
+    function showNotFound() {
+      loading.hidden = true;
+      view.hidden = true;
+      errorState.hidden = true;
+      relatedSection.hidden = true;
+      notFound.hidden = false;
+      document.title = `Produto não encontrado · ${STORE_NAME}`;
+      setMeta("og:title", "Produto não encontrado");
+      setMeta("og:description", "Esse produto saiu do ar.");
+      setMeta("og:image", "");
+      setMeta("og:url", location.href);
+      document.getElementById("robots-meta").setAttribute("content", "noindex,follow");
+    }
+
+    function render(product) {
+      const image = document.getElementById("product-image");
+      const price = document.getElementById("product-price");
+      const category = document.getElementById("product-category");
+      const description = document.getElementById("product-description");
+
+      document.title = `${product.name} · ${STORE_NAME}`;
+      document.getElementById("product-name").textContent = product.name;
+      document.getElementById("breadcrumb-name").textContent = product.name;
+
+      image.src = product.image_url;
+      image.alt = product.name;
+
+      category.textContent = product.category || "produto do drop";
+
+      if (product.price === null || product.price === undefined) {
+        price.hidden = true;
+      } else {
+        price.textContent = money.format(Number(product.price));
+      }
+
+      description.textContent = product.description || "sem descrição. a foto já resolve.";
+
+      document.getElementById("product-buy").href = whatsappLink(product);
+
+      const ogImage = new URL(product.image_url, location.href).href;
+      setMeta("og:title", product.name);
+      setMeta("og:description", (product.description || `Conheça ${product.name} na ${STORE_NAME}.`).slice(0, 180));
+      setMeta("og:image", ogImage);
+      setMeta("og:url", location.href);
+
+      loading.hidden = true;
+      errorState.hidden = true;
+      notFound.hidden = true;
+      view.hidden = false;
+
+      renderRelated(product);
+    }
+
+    async function load() {
+      const id = new URLSearchParams(location.search).get("id");
+      const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+      if (!id || !uuid.test(id)) {
+        showNotFound();
+        return;
+      }
+
+      loading.hidden = false;
+      view.hidden = true;
+      notFound.hidden = true;
+      errorState.hidden = true;
+      relatedSection.hidden = true;
+
+      try {
+        const product = await getActiveProduct(id);
+        if (!product) {
+          showNotFound();
+          return;
+        }
+        render(product);
+      } catch (failure) {
+        console.error(failure);
+        loading.hidden = true;
+        errorState.hidden = false;
+      }
+    }
+
+    document.getElementById("reload-product").addEventListener("click", () => location.reload());
+    load();
+  </script>
+</body>
+</html>

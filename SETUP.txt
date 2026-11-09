@@ -1,0 +1,6 @@
+1. Crie o projeto no Supabase e rode schema.sql no SQL Editor.
+2. Rode seed.sql para carregar os 6 produtos de exemplo.
+3. Preencha SUPABASE_URL e SUPABASE_ANON_KEY em js/config.js e ajuste WHATSAPP_NUMBER e STORE_NAME.
+4. Publique a pasta como site estático na Vercel ou Netlify, sem build.
+5. Entre em /admin.html com usuário admin e senha admin123.
+6. Troque a senha do admin em Authentication > Users após o primeiro acesso.

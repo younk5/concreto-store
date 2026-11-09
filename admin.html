@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F4F1EA">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Painel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
+
+  <header class="site-header site-header--admin">
+    <div class="header-main">
+      <a class="brand" href="index.html" id="store-name">CONCRETO<span aria-hidden="true">.</span></a>
+      <a class="header-wa" href="index.html">ver loja ↗</a>
+    </div>
+  </header>
+
+  <main id="conteudo" class="admin-main">
+    <section id="login-view" class="login-shell">
+      <div class="login-statement">
+        <p class="eyebrow">sistema interno</p>
+        <h1>ÁREA<br>RESTRITA.</h1>
+        <p>Quem vende, edita. Quem só olha, compra.</p>
+        <span class="login-stamp">concreto / backstage</span>
+      </div>
+
+      <div class="login-card">
+        <h2>entrar</h2>
+        <form id="login-form" class="form" novalidate>
+          <div class="field">
+            <label for="login-user">usuário</label>
+            <input id="login-user" type="text" autocomplete="username" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="login-password">senha</label>
+            <input id="login-password" type="password" autocomplete="current-password" placeholder="••••••••">
+          </div>
+          <p id="login-error" class="login-error" role="alert" hidden></p>
+          <button id="login-button" class="btn" type="submit">entrar</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin-view" hidden>
+      <div class="admin-top">
+        <div>
+          <p class="eyebrow">sistema interno</p>
+          <h1>PAINEL.</h1>
+        </div>
+        <button id="logout" class="btn btn--outline" type="button">sair</button>
+      </div>
+
+      <div class="admin-layout">
+        <section class="admin-form" aria-labelledby="form-title">
+          <h2 id="form-title">novo produto</h2>
+
+          <form id="product-form" class="form" novalidate>
+            <div class="field">
+              <label for="name">nome *</label>
+              <input id="name" type="text" maxlength="120" autocomplete="off" placeholder="nome do produto">
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="price">preço</label>
+                <input id="price" type="text" inputmode="decimal" maxlength="20" autocomplete="off" placeholder="0,00">
+              </div>
+              <div class="field">
+                <label for="category">categoria</label>
+                <input id="category" type="text" maxlength="40" autocomplete="off" placeholder="notebook, tv box...">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="photo">foto *</label>
+              <input id="photo" type="file" accept="image/*">
+              <p class="field-hint">jpg, png ou webp. vira webp 1200px antes de subir.</p>
+              <div id="photo-preview" class="photo-preview" hidden></div>
+            </div>
+
+            <div class="field">
+              <label for="description">descrição</label>
+              <textarea id="description" rows="5" maxlength="2000" placeholder="marca, modelo, memória, garantia..."></textarea>
+            </div>
+
+            <label class="check">
+              <input id="featured" type="checkbox">
+              <span class="check-box" aria-hidden="true"></span>
+              <span>colocar em destaque na loja</span>
+            </label>
+
+            <div class="form-actions">
+              <button id="save-button" class="btn" type="submit">salvar produto</button>
+              <button id="cancel-edit" class="text-button" type="button" hidden>cancelar</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-list-wrap" aria-labelledby="list-title">
+          <div class="list-head">
+            <h2 id="list-title">estoque</h2>
+            <span id="admin-count" class="section-note"></span>
+          </div>
+          <div id="admin-list" class="admin-list"></div>
+          <div id="list-empty" class="state state--small" hidden>
+            <p class="state-code">00</p>
+            <h3>Estoque vazio.</h3>
+            <p>Cadastra o primeiro produto antes que o drop vire lenda.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="footer-brand" href="index.html" id="footer-name">CONCRETO</a>
+      <p class="footer-note">painel da loja.</p>
+      <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
+    import {
+      createProduct,
+      deleteProduct,
+      getSession,
+      listAllProducts,
+      removeProductImage,
+      signIn,
+      signOut,
+      updateProduct,
+      uploadProductImage
+    } from "./js/api.js";
+
+    const ADMIN_EMAIL = "admin@loja.com";
+    const money = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+
+    const loginView = document.getElementById("login-view");
+    const adminView = document.getElementById("admin-view");
+    const loginForm = document.getElementById("login-form");
+    const loginUser = document.getElementById("login-user");
+    const loginPassword = document.getElementById("login-password");
+    const loginButton = document.getElementById("login-button");
+    const loginError = document.getElementById("login-error");
+    const logoutButton = document.getElementById("logout");
+
+    const productForm = document.getElementById("product-form");
+    const formTitle = document.getElementById("form-title");
+    const nameInput = document.getElementById("name");
+    const priceInput = document.getElementById("price");
+    const categoryInput = document.getElementById("category");
+    const photoInput = document.getElementById("photo");
+    const descriptionInput = document.getElementById("description");
+    const featuredInput = document.getElementById("featured");
+    const photoPreview = document.getElementById("photo-preview");
+    const saveButton = document.getElementById("save-button");
+    const cancelEdit = document.getElementById("cancel-edit");
+    const adminList = document.getElementById("admin-list");
+    const listEmpty = document.getElementById("list-empty");
+    const adminCount = document.getElementById("admin-count");
+    const toast = document.getElementById("toast");
+
+    let products = [];
+    let editingId = null;
+    let existingImage = null;
+    let photoBlob = null;
+    let previewUrl = null;
+    let processingPhoto = false;
+    let photoToken = 0;
+    let toastTimer = null;
+
+    document.getElementById("store-name").innerHTML = `${esc(STORE_NAME)}<span aria-hidden="true">.</span>`;
+    document.getElementById("footer-name").textContent = STORE_NAME;
+    document.getElementById("footer-wa").href = `https://wa.me/${WHATSAPP_NUMBER}`;
+    document.title = `painel · ${STORE_NAME}`;
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function notify(message, type = "ok") {
+      toast.textContent = message;
+      toast.className = `toast is-visible${type === "error" ? " toast--error" : ""}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.className = "toast";
+      }, 4000);
+    }
+
+    function setLoginError(message) {
+      if (!message) {
+        loginError.hidden = true;
+        loginError.textContent = "";
+        return;
+      }
+      loginError.hidden = false;
+      loginError.textContent = message;
+    }
+
+    function setLoginBusy(busy) {
+      loginButton.disabled = busy;
+      loginButton.textContent = busy ? "entrando..." : "entrar";
+    }
+
+    function setSaving(busy) {
+      saveButton.disabled = busy;
+      saveButton.textContent = busy
+        ? "salvando..."
+        : editingId
+          ? "salvar alterações"
+          : "salvar produto";
+    }
+
+    function priceLabel(price) {
+      return price === null || price === undefined ? "sem preço" : money.format(Number(price));
+    }
+
+    function parsePrice(raw) {
+      const clean = raw.replace(/\s/g, "");
+      if (!clean) return null;
+      const normalized = clean.includes(",")
+        ? clean.replace(/\./g, "").replace(",", ".")
+        : clean;
+      const value = Number(normalized);
+      return Number.isFinite(value) ? value : NaN;
+    }
+
+    function revokePreview() {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
+    }
+
+    function clearPreview() {
+      revokePreview();
+      photoPreview.hidden = true;
+      photoPreview.innerHTML = "";
+    }
+
+    function showPreview(src, isObjectUrl = false) {
+      revokePreview();
+      if (isObjectUrl) previewUrl = src;
+      photoPreview.hidden = false;
+      photoPreview.innerHTML = `<img src="${esc(src)}" alt="prévia da foto" width="240" height="300">`;
+    }
+
+    function toWebp(file) {
+      return new Promise((resolve, reject) => {
+        const source = URL.createObjectURL(file);
+        const image = new Image();
+
+        image.onload = () => {
+          URL.revokeObjectURL(source);
+
+          const max = 1200;
+          const scale = Math.min(1, max / Math.max(image.naturalWidth, image.naturalHeight));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+          const context = canvas.getContext("2d");
+          context.fillStyle = "#F4F1EA";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject(new Error("Falha ao converter a imagem."));
+          }, "image/webp", 0.82);
+        };
+
+        image.onerror = () => {
+          URL.revokeObjectURL(source);
+          reject(new Error("Imagem inválida."));
+        };
+
+        image.src = source;
+      });
+    }
+
+    function resetForm() {
+      editingId = null;
+      existingImage = null;
+      photoBlob = null;
+      processingPhoto = false;
+      photoToken += 1;
+      productForm.reset();
+      photoInput.value = "";
+      clearPreview();
+      formTitle.textContent = "novo produto";
+      saveButton.textContent = "salvar produto";
+      saveButton.disabled = false;
+      cancelEdit.hidden = true;
+    }
+
+    function renderList() {
+      adminCount.textContent = `${String(products.length).padStart(2, "0")} ${products.length === 1 ? "item" : "itens"}`;
+      listEmpty.hidden = products.length > 0;
+
+      if (!products.length) {
+        adminList.innerHTML = "";
+        return;
+      }
+
+      adminList.innerHTML = products.map((product) => `
+        <article class="admin-row" data-id="${esc(product.id)}">
+          <img src="${esc(product.image_url)}" alt="" width="90" height="112" loading="lazy">
+          <div class="admin-row-info">
+            <div class="admin-row-top">
+              <h3>${esc(product.name)}</h3>
+              <div class="badges">
+                ${product.featured ? '<span class="badge badge--lime">destaque</span>' : ""}
+                <span class="badge ${product.active ? "" : "badge--muted"}">${product.active ? "no ar" : "oculto"}</span>
+              </div>
+            </div>
+            <p class="admin-row-meta">${esc(product.category || "sem categoria")} · ${priceLabel(product.price)}</p>
+          </div>
+          <div class="admin-row-actions">
+            <button type="button" data-action="toggle" data-id="${esc(product.id)}">${product.active ? "ocultar" : "publicar"}</button>
+            <button type="button" data-action="edit" data-id="${esc(product.id)}">editar</button>
+            <button type="button" class="danger" data-action="delete" data-id="${esc(product.id)}">excluir</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function loadProducts() {
+      adminList.innerHTML = '<p class="admin-loading">carregando estoque...</p>';
+      listEmpty.hidden = true;
+
+      try {
+        products = await listAllProducts();
+        renderList();
+      } catch (failure) {
+        console.error(failure);
+        adminList.innerHTML = "";
+        adminCount.textContent = "";
+        notify("não deu para carregar o estoque. atualiza a página.", "error");
+      }
+    }
+
+    function startEdit(product) {
+      editingId = product.id;
+      existingImage = { url: product.image_url, path: product.image_path };
+      photoBlob = null;
+      processingPhoto = false;
+      photoToken += 1;
+
+      nameInput.value = product.name;
+      priceInput.value = product.price === null || product.price === undefined
+        ? ""
+        : Number(product.price).toFixed(2).replace(".", ",");
+      categoryInput.value = product.category || "";
+      descriptionInput.value = product.description || "";
+      featuredInput.checked = Boolean(product.featured);
+      photoInput.value = "";
+
+      showPreview(product.image_url);
+      formTitle.textContent = "editar produto";
+      saveButton.textContent = "salvar alterações";
+      cancelEdit.hidden = false;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      nameInput.focus({ preventScroll: true });
+    }
+
+    function showLogin() {
+      adminView.hidden = true;
+      loginView.hidden = false;
+      resetForm();
+      loginPassword.value = "";
+      setLoginError("");
+      loginUser.focus();
+    }
+
+    async function enterPanel() {
+      loginView.hidden = true;
+      adminView.hidden = false;
+      resetForm();
+      setLoginError("");
+      await loadProducts();
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const user = loginUser.value.trim().toLowerCase();
+      const password = loginPassword.value;
+
+      if (!user || !password) {
+        setLoginError("preenche usuário e senha.");
+        return;
+      }
+
+      if (user !== "admin") {
+        setLoginError("usuário ou senha incorretos.");
+        return;
+      }
+
+      setLoginBusy(true);
+      setLoginError("");
+
+      try {
+        await signIn(ADMIN_EMAIL, password);
+        loginForm.reset();
+        await enterPanel();
+      } catch (failure) {
+        console.error(failure);
+        const reason = String(failure?.message || "").toLowerCase();
+        setLoginError(
+          reason.includes("invalid login credentials")
+            ? "usuário ou senha incorretos."
+            : "não deu para entrar agora. confira a conexão e tenta de novo."
+        );
+      } finally {
+        setLoginBusy(false);
+      }
+    });
+
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+      try {
+        await signOut();
+      } catch (failure) {
+        console.error(failure);
+      } finally {
+        logoutButton.disabled = false;
+      }
+      showLogin();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    photoInput.addEventListener("change", async () => {
+      const file = photoInput.files && photoInput.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        notify("manda uma imagem de verdade (jpg, png ou webp).", "error");
+        photoInput.value = "";
+        return;
+      }
+
+      const token = ++photoToken;
+      photoBlob = null;
+      processingPhoto = true;
+      saveButton.disabled = true;
+      photoPreview.hidden = false;
+      photoPreview.innerHTML = '<p class="preview-loading">processando...</p>';
+
+      try {
+        const blob = await toWebp(file);
+        if (token !== photoToken) return;
+        photoBlob = blob;
+        showPreview(URL.createObjectURL(blob), true);
+      } catch (failure) {
+        console.error(failure);
+        if (token !== photoToken) return;
+        photoBlob = null;
+        photoInput.value = "";
+        clearPreview();
+        notify("não deu para processar essa foto. tenta outra.", "error");
+      } finally {
+        if (token === photoToken) {
+          processingPhoto = false;
+          saveButton.disabled = false;
+        }
+      }
+    });
+
+    productForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (processingPhoto) {
+        notify("espera a foto terminar de processar.", "error");
+        return;
+      }
+
+      const name = nameInput.value.trim();
+      const description = descriptionInput.value.trim();
+      const category = categoryInput.value.trim();
+      const price = parsePrice(priceInput.value.trim());
+
+      if (!name) {
+        notify("o nome é obrigatório.", "error");
+        nameInput.focus();
+        return;
+      }
+
+      if (!editingId && !photoBlob) {
+        notify("a foto é obrigatória.", "error");
+        photoInput.focus();
+        return;
+      }
+
+      if (price !== null && (!Number.isFinite(price) || price < 0)) {
+        notify("o preço precisa ser um número maior ou igual a zero.", "error");
+        priceInput.focus();
+        return;
+      }
+
+      setSaving(true);
+      let uploaded = null;
+
+      try {
+        const payload = {
+          name,
+          description: description || null,
+          price,
+          category: category || null,
+          featured: featuredInput.checked
+        };
+
+        if (photoBlob) {
+          uploaded = await uploadProductImage(photoBlob);
+          payload.image_url = uploaded.url;
+          payload.image_path = uploaded.path;
+        }
+
+        if (editingId) {
+          await updateProduct(editingId, payload);
+
+          if (uploaded && existingImage?.path) {
+            try {
+              await removeProductImage(existingImage.path);
+            } catch (cleanupFailure) {
+              console.error(cleanupFailure);
+            }
+          }
+
+          notify("produto atualizado. já está na loja.");
+        } else {
+          payload.active = true;
+          await createProduct(payload);
+          notify("produto salvo. já está no ar.");
+        }
+
+        resetForm();
+        await loadProducts();
+      } catch (failure) {
+        console.error(failure);
+
+        if (uploaded) {
+          try {
+            await removeProductImage(uploaded.path);
+          } catch (cleanupFailure) {
+            console.error(cleanupFailure);
+          }
+        }
+
+        notify("não deu para salvar. tenta de novo.", "error");
+      } finally {
+        setSaving(false);
+      }
+    });
+
+    cancelEdit.addEventListener("click", resetForm);
+
+    adminList.addEventListener("click", async (event) => {
+      const button = event.target.closest("button[data-action]");
+      if (!button) return;
+
+      const id = button.dataset.id;
+      const product = products.find((item) => item.id === id);
+      if (!product) return;
+
+      if (button.dataset.action === "edit") {
+        startEdit(product);
+        return;
+      }
+
+      button.disabled = true;
+
+      try {
+        if (button.dataset.action === "toggle") {
+          await updateProduct(id, { active: !product.active });
+          notify(product.active ? "produto oculto." : "produto no ar de novo.");
+          await loadProducts();
+        }
+
+        if (button.dataset.action === "delete") {
+          if (!confirm(`excluir "${product.name}"? isso não volta atrás.`)) {
+            button.disabled = false;
+            return;
+          }
+
+          await removeProductImage(product.image_path);
+          await deleteProduct(id);
+
+          if (editingId === id) resetForm();
+          notify("produto excluído.");
+          await loadProducts();
+        }
+      } catch (failure) {
+        console.error(failure);
+        notify(
+          button.dataset.action === "delete"
+            ? "não deu para excluir. tenta de novo."
+            : "não deu para atualizar. tenta de novo.",
+          "error"
+        );
+        button.disabled = false;
+      }
+    });
+
+    async function init() {
+      try {
+        const session = await getSession();
+        if (session) await enterPanel();
+        else showLogin();
+      } catch (failure) {
+        console.error(failure);
+        showLogin();
+        setLoginError("não deu para conectar. confira js/config.js e a conexão.");
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

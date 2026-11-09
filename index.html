@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F4F1EA">
+  <meta name="description" content="Notebooks, TV boxes e acessórios escolhidos para durar. Compra direta pelo WhatsApp.">
+  <title>CONCRETO · tech de rua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="header-main">
+      <a class="brand" href="index.html" id="store-name">CONCRETO<span aria-hidden="true">.</span></a>
+      <form class="search" id="search-form" role="search" action="index.html">
+        <label class="sr-only" for="search">buscar por nome</label>
+        <input id="search" name="q" type="search" placeholder="buscar produto" autocomplete="off">
+        <button type="submit" aria-label="buscar">→</button>
+      </form>
+      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">whatsapp <span>↗</span></a>
+    </div>
+  </header>
+
+  <div class="marquee" aria-label="avisos da loja">
+    <div class="marquee-track">
+      <span>NOTEBOOKS E TV BOX</span><span class="sep">///</span>
+      <span>ENVIO EM ATÉ 24H</span><span class="sep">///</span>
+      <span>GARANTIA REAL</span><span class="sep">///</span>
+      <span>SUPORTE QUE RESPONDE</span><span class="sep">///</span>
+      <span aria-hidden="true">NOTEBOOKS E TV BOX</span><span class="sep" aria-hidden="true">///</span>
+      <span aria-hidden="true">ENVIO EM ATÉ 24H</span><span class="sep" aria-hidden="true">///</span>
+      <span aria-hidden="true">GARANTIA REAL</span><span class="sep" aria-hidden="true">///</span>
+      <span aria-hidden="true">SUPORTE QUE RESPONDE</span><span class="sep" aria-hidden="true">///</span>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">drop 07 / tech de rua</p>
+        <h1 id="hero-title">A RUA<br>NÃO TEM<br><span class="mark">BUFFER</span>.</h1>
+        <p class="hero-text">Notebooks, TV boxes e acessórios escolhidos para durar. Sem ficha técnica infinita: a gente explica o que importa e resolve no WhatsApp.</p>
+        <a class="hero-link" href="#catalogo">ver o drop inteiro <span>↓</span></a>
+      </div>
+
+      <div class="hero-stage">
+        <div class="hero-skeleton" id="hero-skeleton" aria-hidden="true">
+          <div class="hero-skeleton-media"></div>
+          <div class="hero-skeleton-line"></div>
+          <div class="hero-skeleton-line hero-skeleton-line--short"></div>
+        </div>
+
+        <article class="hero-product" id="hero-product" hidden>
+          <span class="tag tag--lime">em destaque</span>
+          <a class="hero-media" id="hero-image-link" href="#">
+            <img id="hero-image" src="" alt="" width="1200" height="1500">
+          </a>
+          <div class="hero-product-info">
+            <div>
+              <p class="micro" id="hero-category"></p>
+              <h2><a id="hero-name-link" href="#"><span id="hero-name"></span></a></h2>
+            </div>
+            <div class="hero-buy">
+              <p class="hero-price" id="hero-price"></p>
+              <a class="btn btn-buy" id="hero-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp</a>
+            </div>
+          </div>
+        </article>
+
+        <div class="hero-fallback" id="hero-fallback" hidden>
+          <p class="micro" id="hero-fallback-label">estoque em pausa</p>
+          <p id="hero-fallback-text">O drop esgotou antes de começar. Volta na quinta — ou chama no WhatsApp.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section featured-section" id="destaques" hidden>
+      <div class="section-head">
+        <h2>destaques</h2>
+        <span class="section-note">escolhidos a dedo</span>
+      </div>
+      <div id="featured-grid" class="featured-grid"></div>
+    </section>
+
+    <section class="section catalog-section" id="catalogo">
+      <div class="section-head">
+        <h2>todos os produtos</h2>
+        <span class="section-note" id="result-count"></span>
+      </div>
+
+      <div class="filter-bar">
+        <div id="chips" class="chips" role="group" aria-label="filtrar por categoria"></div>
+        <button class="clear-filters" id="clear-filters" type="button" hidden>limpar filtros</button>
+      </div>
+
+      <div id="skeleton" class="product-grid" aria-hidden="true">
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+        <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line skeleton-line--short"></div></div>
+      </div>
+
+      <div id="grid" class="product-grid" aria-live="polite"></div>
+
+      <div id="empty" class="state" hidden>
+        <p class="state-code">00</p>
+        <h2 id="empty-title">Nada com esse filtro.</h2>
+        <p id="empty-text">A rua é grande, mas o estoque é curto. Tenta outra categoria ou limpa tudo.</p>
+        <button class="btn btn--outline" id="empty-clear" type="button">limpar filtros</button>
+      </div>
+
+      <div id="error" class="state" hidden>
+        <p class="state-code">!</p>
+        <h2>Deu ruim no sinal.</h2>
+        <p>Não deu para carregar o estoque agora. Tenta de novo em instantes.</p>
+        <button class="btn btn--outline" id="retry" type="button">tentar de novo</button>
+      </div>
+
+      <noscript>
+        <div class="state">
+          <h2>Sem JavaScript, sem drop.</h2>
+          <p>Ative o JavaScript para ver os produtos.</p>
+        </div>
+      </noscript>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="footer-brand" href="index.html" id="footer-name">CONCRETO</a>
+      <p class="footer-note">tech de rua. estoque curto. conversa direta.</p>
+      <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
+    import { listActiveProducts } from "./js/api.js";
+
+    const heroProduct = document.getElementById("hero-product");
+    const heroSkeleton = document.getElementById("hero-skeleton");
+    const heroFallback = document.getElementById("hero-fallback");
+    const featuredSection = document.getElementById("destaques");
+    const featuredGrid = document.getElementById("featured-grid");
+    const grid = document.getElementById("grid");
+    const skeleton = document.getElementById("skeleton");
+    const empty = document.getElementById("empty");
+    const errorState = document.getElementById("error");
+    const chips = document.getElementById("chips");
+    const resultCount = document.getElementById("result-count");
+    const searchInput = document.getElementById("search");
+    const searchForm = document.getElementById("search-form");
+    const clearFilters = document.getElementById("clear-filters");
+    const emptyClear = document.getElementById("empty-clear");
+    const waBase = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+    const money = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+
+    let allProducts = [];
+    let activeCategory = "todos";
+    let term = "";
+
+    document.getElementById("store-name").innerHTML = `${escapedStoreName()}<span aria-hidden="true">.</span>`;
+    document.getElementById("footer-name").textContent = STORE_NAME;
+    document.getElementById("header-wa").href = waBase;
+    document.getElementById("footer-wa").href = waBase;
+    document.title = `${STORE_NAME} · tech de rua`;
+
+    function escapedStoreName() {
+      return String(STORE_NAME).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function normalize(value) {
+      return String(value ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    function productHref(product) {
+      return `produto.html?id=${encodeURIComponent(product.id)}`;
+    }
+
+    function whatsappLink(product) {
+      const link = new URL(productHref(product), location.href).href;
+      const message = `Olá! Tenho interesse em: ${product.name}. Link: ${link}`;
+      return `${waBase}?text=${encodeURIComponent(message)}`;
+    }
+
+    function priceMarkup(product, className = "price") {
+      return product.price === null || product.price === undefined
+        ? ""
+        : `<span class="${className}">${money.format(Number(product.price))}</span>`;
+    }
+
+    function cardMarkup(product) {
+      const href = productHref(product);
+      const category = product.category
+        ? `<span class="card-category">${esc(product.category)}</span>`
+        : "";
+
+      return `
+        <article class="product-card">
+          <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
+            <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
+            <span class="card-view">ver produto</span>
+          </a>
+          <div class="card-info">
+            <div class="card-text">
+              ${category}
+              <h3><a href="${href}">${esc(product.name)}</a></h3>
+            </div>
+            ${priceMarkup(product)}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderHero(product) {
+      const href = productHref(product);
+      const image = document.getElementById("hero-image");
+
+      image.src = product.image_url;
+      image.alt = product.name;
+      document.getElementById("hero-image-link").href = href;
+      document.getElementById("hero-name").textContent = product.name;
+      document.getElementById("hero-name-link").href = href;
+      document.getElementById("hero-category").textContent = product.category || "produto do drop";
+      document.getElementById("hero-price").textContent = product.price === null || product.price === undefined
+        ? ""
+        : money.format(Number(product.price));
+      document.getElementById("hero-buy").href = whatsappLink(product);
+
+      heroSkeleton.hidden = true;
+      heroFallback.hidden = true;
+      heroProduct.hidden = false;
+    }
+
+    function renderFeatured(products) {
+      if (!products.length) {
+        featuredSection.hidden = true;
+        return;
+      }
+      featuredGrid.innerHTML = products.map(cardMarkup).join("");
+      featuredSection.hidden = false;
+    }
+
+    function renderChips() {
+      const categories = [...new Set(allProducts.map((product) => product.category).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+      chips.innerHTML = ["todos", ...categories].map((category) => `
+        <button class="chip${activeCategory === category ? " is-active" : ""}" type="button" data-category="${esc(category)}" aria-pressed="${activeCategory === category}">
+          ${esc(category)}
+        </button>
+      `).join("");
+    }
+
+    function filteredProducts() {
+      return allProducts.filter((product) => {
+        const categoryOk = activeCategory === "todos" || product.category === activeCategory;
+        const termOk = !term || normalize(product.name).includes(term) || normalize(product.category).includes(term);
+        return categoryOk && termOk;
+      });
+    }
+
+    function applyFilters() {
+      const filtered = filteredProducts();
+      const hasFilters = term || activeCategory !== "todos";
+
+      grid.innerHTML = filtered.map(cardMarkup).join("");
+      resultCount.textContent = `${String(filtered.length).padStart(2, "0")} ${filtered.length === 1 ? "item" : "itens"}`;
+      clearFilters.hidden = !hasFilters;
+      featuredSection.hidden = hasFilters || featuredSection.dataset.empty === "true";
+
+      if (!filtered.length) {
+        empty.hidden = false;
+        if (!allProducts.length) {
+          document.getElementById("empty-title").textContent = "O drop esgotou antes de começar.";
+          document.getElementById("empty-text").textContent = "Nenhum produto no ar agora. Volta na quinta ou chama no WhatsApp para saber o que vem.";
+          emptyClear.hidden = true;
+        } else {
+          document.getElementById("empty-title").textContent = "Nada com esse filtro.";
+          document.getElementById("empty-text").textContent = "A rua é grande, mas o estoque é curto. Tenta outra categoria ou limpa tudo.";
+          emptyClear.hidden = false;
+        }
+      } else {
+        empty.hidden = true;
+      }
+    }
+
+    function resetFilters() {
+      term = "";
+      activeCategory = "todos";
+      searchInput.value = "";
+      renderChips();
+      applyFilters();
+    }
+
+    async function load() {
+      skeleton.hidden = false;
+      errorState.hidden = true;
+      empty.hidden = true;
+      featuredSection.hidden = true;
+      chips.innerHTML = "";
+      clearFilters.hidden = true;
+      grid.innerHTML = "";
+      resultCount.textContent = "";
+      heroSkeleton.hidden = false;
+      heroProduct.hidden = true;
+      heroFallback.hidden = true;
+      document.getElementById("hero-fallback-label").textContent = "estoque em pausa";
+      document.getElementById("hero-fallback-text").textContent = "O drop esgotou antes de começar. Volta na quinta — ou chama no WhatsApp.";
+
+      try {
+        allProducts = await listActiveProducts();
+        skeleton.hidden = true;
+        heroSkeleton.hidden = true;
+
+        if (!allProducts.length) {
+          heroFallback.hidden = false;
+          featuredSection.hidden = true;
+          featuredSection.dataset.empty = "true";
+          applyFilters();
+          return;
+        }
+
+        const featured = allProducts.filter((product) => product.featured).slice(0, 3);
+        featuredSection.dataset.empty = featured.length ? "false" : "true";
+        renderHero(featured[0] || allProducts[0]);
+        renderFeatured(featured);
+        renderChips();
+        applyFilters();
+      } catch (failure) {
+        console.error(failure);
+        skeleton.hidden = true;
+        heroSkeleton.hidden = true;
+        heroFallback.hidden = false;
+        document.getElementById("hero-fallback-label").textContent = "sinal fora do ar";
+        document.getElementById("hero-fallback-text").textContent = "Não deu para puxar o drop agora. Tenta de novo em instantes.";
+        errorState.hidden = false;
+        featuredSection.hidden = true;
+        resultCount.textContent = "fora do ar";
+      }
+    }
+
+    searchInput.addEventListener("input", () => {
+      term = normalize(searchInput.value);
+      applyFilters();
+    });
+
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      term = normalize(searchInput.value);
+      applyFilters();
+      document.getElementById("catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    chips.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-category]");
+      if (!button) return;
+      activeCategory = button.dataset.category;
+      renderChips();
+      applyFilters();
+    });
+
+    clearFilters.addEventListener("click", resetFilters);
+    emptyClear.addEventListener("click", resetFilters);
+    document.getElementById("retry").addEventListener("click", load);
+
+    const initialQuery = new URLSearchParams(location.search).get("q");
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+      term = normalize(initialQuery);
+    }
+
+    load();
+  </script>
+</body>
+</html>
