@@ -1,6 +1,6 @@
-export const SUPABASE_URL = "https://SEU-PROJETO.supabase.co";
-export const SUPABASE_ANON_KEY = "SUA-ANON-KEY";
-export const WHATSAPP_NUMBER = "5511999999999";
+export const SUPABASE_URL = "https://thiibazkdxavfrlgmofk.supabase.co";
+export const SUPABASE_ANON_KEY = "sb_publishable_VFtc4jYMPuUXjVWiO1s5hA_C4dkZiL2";
+export const WHATSAPP_NUMBER = "5511951631913";
 export const STORE_NAME = "VG STORE";
 
 export const ADMIN_USER = "admin";
