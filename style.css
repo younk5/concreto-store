@@ -2837,3 +2837,24 @@ body.admin-page .badge--accent {
   border-color: transparent;
   color: #120700;
 }
+
+/* painel: rodape preto com texto claro */
+body.admin-page .site-footer {
+  --ink: #f2f4f7;
+  --muted: #a8b0bd;
+  --faint: rgba(242, 244, 247, 0.45);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  background: #08080a;
+  color: var(--ink);
+}
+
+body.admin-page .site-footer .footer-logo {
+  background: transparent;
+}
+
+body.admin-page .toast {
+  color: #f2f4f7;
+  background: #0b0b0d;
+  border-color: rgba(255, 74, 0, 0.55);
+}
