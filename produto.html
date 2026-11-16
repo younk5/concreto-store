@@ -23,51 +23,25 @@
   <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body class="store">
   <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
 
-  <div class="topline">
-    <span>compra direta no whatsapp</span>
-    <a href="/">voltar à loja</a>
-  </div>
-
   <header class="site-header">
     <div class="header-main">
-      <div class="brand-block">
       <a class="brand" href="/" id="store-name" aria-label="VG Store, página inicial">
-        <svg class="brand-swoosh" viewBox="0 0 124 34" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="swooshGrad" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#C82100"/>
-              <stop offset="0.45" stop-color="#FF5A0A"/>
-              <stop offset="1" stop-color="#FFB05C"/>
-            </linearGradient>
-          </defs>
-          <path d="M3 28C28 6 78 -2 121 12" fill="none" stroke="url(#swooshGrad)" stroke-width="4.5" stroke-linecap="round"/>
-        </svg>
         <span class="brand-type"><span class="brand-vg">VG</span><span class="brand-store">STORE</span></span>
       </a>
-      <p class="brand-tag">tecnologia ao seu alcance</p>
-      </div>
 
-
-      <form class="search" role="search" action="index.html">
+      <form class="search" role="search" action="/">
         <label class="sr-only" for="search">buscar por nome</label>
-        <svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-          <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
-          <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-        <input id="search" name="q" type="search" placeholder="buscar produto" autocomplete="off">
-        <button type="submit" aria-label="buscar">→</button>
+        <input id="search" name="q" type="search" placeholder="buscar no catálogo" autocomplete="off">
+        <button type="submit">buscar</button>
       </form>
 
-      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">
-        <span>whatsapp</span>
-        <span aria-hidden="true">↗</span>
-      </a>
+      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
     </div>
   </header>
 
@@ -96,28 +70,21 @@
       <div id="product-thumbs" class="product-thumbs" hidden></div>
 
       <div class="product-panel">
-        <p class="eyebrow" id="product-category"></p>
+        <p class="product-cat" id="product-category"></p>
         <h1 id="product-name"></h1>
         <p class="product-description" id="product-description"></p>
         <p class="product-price" id="product-price"></p>
 
-        <a class="btn btn-buy" id="product-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp <span aria-hidden="true">↗</span></a>
-        <p class="product-note">sem carrinho, sem cadastro. a conversa é direta.</p>
+        <a class="btn-wa btn-wa--wide" id="product-buy" href="#" target="_blank" rel="noopener">comprar no WhatsApp</a>
+        <p class="product-note">Sem cadastro e sem carrinho. A mensagem já vai com o nome do produto e o link.</p>
 
-        <div class="product-specs">
-          <div><span class="mono">envio</span><strong>até 24h</strong></div>
-          <div><span class="mono">garantia</span><strong>real</strong></div>
-          <div><span class="mono">suporte</span><strong>humano</strong></div>
-        </div>
-
-        <a class="back-link" href="/">← voltar ao catálogo</a>
+        <a class="back-link" href="/">voltar ao catálogo</a>
       </div>
     </article>
 
     <section id="related-section" class="section related-section" hidden>
       <div class="section-head">
-        <h2>combina com</h2>
-        <span class="section-note">mesma prateleira</span>
+        <h2>Outros itens</h2>
       </div>
       <div id="related-grid" class="related-grid"></div>
     </section>
@@ -134,7 +101,7 @@
         <span class="buy-bar-name" id="buy-bar-name"></span>
         <span class="buy-bar-price" id="buy-bar-price"></span>
       </div>
-      <a class="btn btn-buy" id="buy-bar-cta" href="#" target="_blank" rel="noopener">comprar <span aria-hidden="true">↗</span></a>
+      <a class="btn-wa" id="buy-bar-cta" href="#" target="_blank" rel="noopener">comprar</a>
     </div>
 
     <section id="product-error" class="state" hidden>
@@ -149,19 +116,18 @@
     <div class="footer-inner">
       <div class="footer-brand-block">
         <img class="footer-logo" src="/img/logo.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
-        <p class="footer-note">Tecnologia ao seu alcance. Compra direta, sem carrinho e sem cadastro.</p>
+        <p class="footer-note">Loja pequena, catálogo curado. Antes de fechar qualquer compra, a gente conversa.</p>
       </div>
       <nav class="footer-nav" aria-label="navegação do rodapé">
-        <a href="index.html#catalogo">catálogo</a>
-        <a href="index.html#destaques">destaques</a>
-        <a href="index.html#como-comprar">como comprar</a>
-        <a href="admin.html" rel="nofollow">painel</a>
+        <a href="/#catalogo">Catálogo</a>
+        <a href="/#como-funciona">Como funciona</a>
+        <a id="footer-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
       </nav>
-      <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+      <a class="footer-admin" href="/admin.html" rel="nofollow">painel do lojista</a>
     </div>
     <div class="footer-base">
       <span>© 2026 VG Store</span>
-      <span class="mono">vg store · tecnologia ao seu alcance</span>
+      <span class="mono">tecnologia ao seu alcance</span>
     </div>
   </footer>
 
@@ -221,23 +187,17 @@
       const photo = cover ? cover.url : "";
       const price = product.price === null || product.price === undefined
         ? ""
-        : `<span class="price">${money.format(Number(product.price))}</span>`;
+        : `<span class="card-price">${money.format(Number(product.price))}</span>`;
 
       return `
         <article class="product-card">
-          <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
+          <a class="card-media" href="${href}" aria-label="${esc(product.name)}">
             <img src="${esc(photo)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy" decoding="async">
-            <span class="card-view">ver produto <span aria-hidden="true">↗</span></span>
           </a>
           <div class="card-info">
-            <div class="card-text">
-              ${product.category ? `<span class="card-category">${esc(product.category)}</span>` : ""}
-              <h3><a href="${href}">${esc(product.name)}</a></h3>
-            </div>
-            <div class="card-foot">
-              ${price}
-              <a class="card-link" href="${href}">detalhes <span aria-hidden="true">↗</span></a>
-            </div>
+            ${product.category ? `<span class="card-category">${esc(product.category)}</span>` : ""}
+            <h3><a href="${href}">${esc(product.name)}</a></h3>
+            ${price}
           </div>
         </article>
       `;
