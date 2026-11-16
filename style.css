@@ -2299,3 +2299,348 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+/* =====================================================================
+   TEMA DA LOJA — laranja, branco e preto (o painel segue escuro)
+   ===================================================================== */
+
+body.store {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f7f7f8;
+  --surface-3: #f0f0f2;
+  --ink: #0b0b0d;
+  --muted: #5b6068;
+  --faint: rgba(11, 11, 13, 0.45);
+  --line: rgba(11, 11, 13, 0.1);
+  --line-strong: rgba(11, 11, 13, 0.2);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body.store .site-header {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--line);
+}
+
+body.store .header-main {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 16px;
+  padding-block: 12px;
+}
+
+.brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-width: 0;
+}
+
+body.store .brand {
+  padding: 9px 14px 8px;
+  border-radius: 12px;
+  background: #08080a;
+  box-shadow: 0 10px 24px rgba(8, 8, 10, 0.16);
+}
+
+body.store .brand-swoosh {
+  top: 5px;
+  left: 12px;
+  width: clamp(58px, 6.4vw, 70px);
+  filter: drop-shadow(0 0 8px rgba(255, 74, 0, 0.5));
+}
+
+body.store .brand-type {
+  padding-top: 6px;
+}
+
+.brand-tag {
+  margin: 0;
+  padding-left: 2px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+body.store .search {
+  background: #f5f5f6;
+  border-color: var(--line);
+}
+
+body.store .search:focus-within {
+  background: #fff;
+}
+
+body.store .search button {
+  background: #0b0b0d;
+  color: #fff;
+}
+
+body.store .search button:hover {
+  background: var(--orange-grad);
+  color: #fff;
+}
+
+body.store .header-wa {
+  color: var(--ink);
+}
+
+body.store .marquee {
+  background: #0b0b0d;
+  color: #fff;
+  border-block: 0;
+}
+
+body.store .marquee-track .sep {
+  color: var(--orange);
+}
+
+body.store .card-media {
+  background: #f4f4f5;
+}
+
+body.store .product-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(11, 11, 13, 0.04);
+}
+
+body.store .product-card:hover {
+  border-color: rgba(255, 74, 0, 0.45);
+  box-shadow: 0 18px 40px rgba(11, 11, 13, 0.1);
+}
+
+body.store .card-view {
+  background: #0b0b0d;
+  color: #fff;
+}
+
+body.store .card-category {
+  color: var(--orange);
+}
+
+body.store .chip {
+  background: #f5f5f6;
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+body.store .chip:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+body.store .chip.is-active {
+  background: var(--orange-grad);
+  border-color: transparent;
+  color: #fff;
+}
+
+body.store .btn--ghost {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+body.store .btn--ghost:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+body.store .steps li {
+  background: #fafafa;
+  border-color: var(--line);
+}
+
+body.store .skeleton-card,
+body.store .skeleton-line,
+body.store .skeleton-media {
+  background-image: linear-gradient(100deg, #eeeef0 30%, #f7f7f8 50%, #eeeef0 70%);
+}
+
+body.store .cta-band,
+body.store .site-footer {
+  --ink: #f2f4f7;
+  --muted: #a8b0bd;
+  --faint: rgba(242, 244, 247, 0.45);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  background: #08080a;
+  color: var(--ink);
+}
+
+body.store .site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 900px) {
+  body.store .header-main {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px 24px;
+  }
+
+  body.store .brand-block {
+    grid-column: 1;
+  }
+
+  body.store .search {
+    grid-column: 2;
+    align-self: center;
+  }
+
+  body.store .header-wa {
+    grid-column: 3;
+    align-self: center;
+  }
+}
+
+/* ---- loja: contraste de texto sobre branco ---- */
+
+body.store .topline {
+  color: rgba(242, 244, 247, 0.72);
+  background: #08080a;
+}
+
+body.store .section-head h2,
+body.store .list-head h2 {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--ink);
+}
+
+body.store .section-head h2 .mark,
+body.store .list-head h2 .mark {
+  color: var(--orange);
+}
+
+body.store .section-head h2::before,
+body.store .list-head h2::before {
+  box-shadow: none;
+}
+
+body.store .section-note,
+body.store .brand-tag {
+  color: #6b7076;
+}
+
+body.store .card-category {
+  color: #c83800;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+}
+
+body.store .card-info {
+  gap: 10px;
+}
+
+body.store .card-text h3 {
+  overflow-wrap: anywhere;
+}
+
+body.store .search-icon {
+  color: #6b7076;
+}
+
+body.store .search input::placeholder {
+  color: rgba(11, 11, 13, 0.52);
+}
+
+body.store .header-wa {
+  color: #150800;
+  box-shadow: 0 6px 16px rgba(255, 74, 0, 0.16);
+}
+
+body.store .header-wa:hover {
+  box-shadow: 0 10px 22px rgba(255, 74, 0, 0.24);
+}
+
+body.store .empty-state,
+body.store .error-state {
+  color: var(--muted);
+}
+
+/* legibilidade de microtexto na loja */
+body.store .brand-tag {
+  font-size: 0.66rem;
+  letter-spacing: 0.17em;
+}
+
+body.store .card-category {
+  font-size: 0.63rem;
+}
+
+body.store .section-note {
+  font-size: 0.66rem;
+}
+
+/* produto (loja) — titulo e preco no tema claro */
+body.store .product-panel h1 {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--ink);
+}
+
+body.store .product-panel h1 .mark {
+  color: var(--orange);
+}
+
+body.store .product-price {
+  color: #b3350a;
+  background: #fff1e9;
+  border-color: rgba(200, 56, 0, 0.28);
+}
+
+body.store .product-gallery {
+  background: #f4f4f5;
+  box-shadow: 0 18px 44px rgba(11, 11, 13, 0.12);
+}
+
+body.store .product-gallery::after {
+  background: linear-gradient(180deg, transparent 60%, rgba(11, 11, 13, 0.1) 100%);
+}
+
+body.store .product-loading-media {
+  background-image: linear-gradient(100deg, #eeeef0 30%, #f7f7f8 50%, #eeeef0 70%);
+}
+
+body.store .product-panel .info-card,
+body.store .product-panel .product-facts li {
+  background: #fafafa;
+  border-color: var(--line);
+}
+
+/* header da loja no celular: logo + whatsapp na primeira linha, busca embaixo */
+@media (max-width: 899px) {
+  body.store .header-main {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px 12px;
+  }
+
+  body.store .brand-block {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  body.store .header-wa {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    padding: 10px 14px;
+    font-size: 0.6rem;
+  }
+
+  body.store .search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+body.store .site-footer .brand-tag {
+  color: rgba(242, 244, 247, 0.6);
+}

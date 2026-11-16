@@ -16,16 +16,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="store">
   <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
-
-  <div class="topline">
-    <span>tecnologia ao seu alcance</span>
-    <a href="#catalogo">ver catálogo</a>
-  </div>
 
   <header class="site-header">
     <div class="header-main">
+      <div class="brand-block">
       <a class="brand" href="index.html" id="store-name" aria-label="VG Store, página inicial">
         <svg class="brand-swoosh" viewBox="0 0 124 34" aria-hidden="true" focusable="false">
           <defs>
@@ -39,12 +35,8 @@
         </svg>
         <span class="brand-type"><span class="brand-vg">VG</span><span class="brand-store">STORE</span></span>
       </a>
-
-      <nav class="header-nav" aria-label="navegação principal">
-        <a href="#destaques">destaques</a>
-        <a href="#catalogo">catálogo</a>
-        <a href="#como-comprar">como comprar</a>
-      </nav>
+      <p class="brand-tag">tecnologia ao seu alcance</p>
+      </div>
 
       <form class="search" id="search-form" role="search" action="index.html">
         <label class="sr-only" for="search">buscar por nome</label>
@@ -77,64 +69,6 @@
   </div>
 
   <main id="conteudo">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow">vg store <span class="dot" aria-hidden="true"></span> seleção 2026</p>
-        <h1 id="hero-title">tecnologia<br>ao seu<br><span class="mark">alcance.</span></h1>
-        <p class="hero-text">Notebooks, TV box, áudio e acessórios que a gente escolhe antes de vender. Sem ficha técnica infinita: você fala com uma pessoa e resolve tudo no WhatsApp.</p>
-
-        <div class="hero-actions">
-          <a class="btn btn-buy" href="#catalogo">ver catálogo <span aria-hidden="true">↓</span></a>
-          <a class="btn btn--ghost" id="hero-cta-wa" href="#" target="_blank" rel="noopener">
-            falar com especialista <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-
-        <ul class="hero-trust">
-          <li><span class="mono">01</span> envio em até 24h</li>
-          <li><span class="mono">02</span> garantia real</li>
-          <li><span class="mono">03</span> suporte que responde</li>
-        </ul>
-      </div>
-
-      <div class="hero-stage">
-        <div class="hero-skeleton" id="hero-skeleton" aria-hidden="true">
-          <div class="hero-skeleton-media"></div>
-          <div class="hero-skeleton-line"></div>
-          <div class="hero-skeleton-line hero-skeleton-line--short"></div>
-        </div>
-
-        <article class="hero-product" id="hero-product" hidden>
-          <span class="tag tag--orange">em destaque</span>
-          <a class="hero-media" id="hero-image-link" href="#">
-            <img id="hero-image" src="" alt="" width="1200" height="1500">
-          </a>
-          <div class="hero-product-info">
-            <div>
-              <p class="micro" id="hero-category"></p>
-              <h2><a id="hero-name-link" href="#"><span id="hero-name"></span></a></h2>
-            </div>
-            <div class="hero-buy">
-              <p class="hero-price" id="hero-price"></p>
-              <a class="btn btn-buy" id="hero-buy" href="#" target="_blank" rel="noopener">comprar agora</a>
-            </div>
-          </div>
-        </article>
-
-        <div class="hero-fallback" id="hero-fallback" hidden>
-          <p class="micro" id="hero-fallback-label">estoque em pausa</p>
-          <p id="hero-fallback-text">O catálogo está sendo atualizado. Chama no WhatsApp que a gente te diz o que chegou.</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="trust-strip">
-      <div><span class="mono">envio</span><strong>até 24h</strong></div>
-      <div><span class="mono">garantia</span><strong>real e documentada</strong></div>
-      <div><span class="mono">suporte</span><strong>humano, no whatsapp</strong></div>
-      <div><span class="mono">curadoria</span><strong>produto por produto</strong></div>
-    </div>
-
     <section class="section featured-section" id="destaques" hidden>
       <div class="section-head">
         <h2>destaques</h2>
@@ -245,9 +179,6 @@
     import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
     import { listActiveProducts } from "./js/api.js";
 
-    const heroProduct = document.getElementById("hero-product");
-    const heroSkeleton = document.getElementById("hero-skeleton");
-    const heroFallback = document.getElementById("hero-fallback");
     const featuredSection = document.getElementById("destaques");
     const featuredGrid = document.getElementById("featured-grid");
     const grid = document.getElementById("grid");
@@ -273,7 +204,6 @@
 
     document.getElementById("store-name").setAttribute("aria-label", `${STORE_NAME}, página inicial`);
     document.getElementById("header-wa").href = waBase;
-    document.getElementById("hero-cta-wa").href = waBase;
     document.getElementById("band-wa").href = waBase;
     document.getElementById("footer-wa").href = waBase;
     document.title = `${STORE_NAME} · tecnologia ao seu alcance`;
@@ -333,26 +263,6 @@
           </div>
         </article>
       `;
-    }
-
-    function renderHero(product) {
-      const href = productHref(product);
-      const image = document.getElementById("hero-image");
-
-      image.src = product.image_url;
-      image.alt = product.name;
-      document.getElementById("hero-image-link").href = href;
-      document.getElementById("hero-name").textContent = product.name;
-      document.getElementById("hero-name-link").href = href;
-      document.getElementById("hero-category").textContent = product.category || "produto do catálogo";
-      document.getElementById("hero-price").textContent = product.price === null || product.price === undefined
-        ? "preço no whatsapp"
-        : money.format(Number(product.price));
-      document.getElementById("hero-buy").href = whatsappLink(product);
-
-      heroSkeleton.hidden = true;
-      heroFallback.hidden = true;
-      heroProduct.hidden = false;
     }
 
     function renderFeatured(products) {
@@ -425,19 +335,12 @@
       clearFilters.hidden = true;
       grid.innerHTML = "";
       resultCount.textContent = "";
-      heroSkeleton.hidden = false;
-      heroProduct.hidden = true;
-      heroFallback.hidden = true;
-      document.getElementById("hero-fallback-label").textContent = "estoque em pausa";
-      document.getElementById("hero-fallback-text").textContent = "O catálogo está sendo atualizado. Chama no WhatsApp que a gente te diz o que chegou.";
 
       try {
         allProducts = await listActiveProducts();
         skeleton.hidden = true;
-        heroSkeleton.hidden = true;
 
         if (!allProducts.length) {
-          heroFallback.hidden = false;
           featuredSection.hidden = true;
           featuredSection.dataset.empty = "true";
           applyFilters();
@@ -446,17 +349,12 @@
 
         const featured = allProducts.filter((product) => product.featured).slice(0, 3);
         featuredSection.dataset.empty = featured.length ? "false" : "true";
-        renderHero(featured[0] || allProducts[0]);
         renderFeatured(featured);
         renderChips();
         applyFilters();
       } catch (failure) {
         console.error(failure);
         skeleton.hidden = true;
-        heroSkeleton.hidden = true;
-        heroFallback.hidden = false;
-        document.getElementById("hero-fallback-label").textContent = "catálogo fora do ar";
-        document.getElementById("hero-fallback-text").textContent = "Não deu para puxar o catálogo agora. Tenta de novo em instantes.";
         errorState.hidden = false;
         featuredSection.hidden = true;
         resultCount.textContent = "fora do ar";
