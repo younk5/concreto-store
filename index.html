@@ -62,18 +62,18 @@
     </div>
   </header>
 
-  <div class="marquee" aria-label="avisos da loja">
-    <div class="marquee-track">
-      <span>envio em até 24h</span><span class="sep" aria-hidden="true">◆</span>
-      <span>garantia real</span><span class="sep" aria-hidden="true">◆</span>
-      <span>atendimento humano</span><span class="sep" aria-hidden="true">◆</span>
-      <span>compra pelo whatsapp</span><span class="sep" aria-hidden="true">◆</span>
-      <span aria-hidden="true">envio em até 24h</span><span class="sep" aria-hidden="true">◆</span>
-      <span aria-hidden="true">garantia real</span><span class="sep" aria-hidden="true">◆</span>
-      <span aria-hidden="true">atendimento humano</span><span class="sep" aria-hidden="true">◆</span>
-      <span aria-hidden="true">compra pelo whatsapp</span><span class="sep" aria-hidden="true">◆</span>
-    </div>
-  </div>
+  <main id="conteudo">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <h1 class="intro-title" id="intro-title">tecnologia<br>ao seu <em>alcance</em></h1>
+        <p class="intro-sub">Notebook, som e acessório escolhidos um por um. Compra&nbsp;direta no WhatsApp, sem cadastro e sem carrinho.</p>
+      </div>
+      <div class="intro-meta" aria-label="o que a loja garante">
+        <span>envio em até 24h</span>
+        <span>garantia real</span>
+        <span>atendimento humano</span>
+      </div>
+    </section>
 
   <main id="conteudo">
     <section class="section featured-section" id="destaques" hidden>
@@ -155,7 +155,7 @@
     <section class="cta-band" aria-labelledby="cta-title">
       <div class="cta-band-text">
         <p class="eyebrow">atendimento direto</p>
-        <h2 id="cta-title">tem dúvida<br>técnica?</h2>
+        <h2 id="cta-title">tem dúvida<br><em>técnica?</em></h2>
         <p>Fala com uma pessoa de verdade. Ajudamos a escolher sem empurrar o mais caro.</p>
       </div>
       <a class="btn btn-buy" id="band-wa" href="#" target="_blank" rel="noopener">chamar no whatsapp <span aria-hidden="true">↗</span></a>
@@ -166,7 +166,7 @@
     <div class="footer-inner">
       <div class="footer-brand-block">
         <img class="footer-logo" src="img/logo.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
-        <p class="footer-note">Tecnologia ao seu alcance. Compra direta, sem carrinho e sem cadastro.</p>
+        <p class="footer-note">Compra direta, sem carrinho e sem cadastro. Falamos com você pelo WhatsApp antes de fechar.</p>
       </div>
       <nav class="footer-nav" aria-label="navegação do rodapé">
         <a href="#catalogo">catálogo</a>
@@ -268,7 +268,10 @@
               ${category}
               <h3><a href="${href}">${esc(product.name)}</a></h3>
             </div>
-            ${priceMarkup(product)}
+            <div class="card-foot">
+              ${priceMarkup(product)}
+              <a class="card-link" href="${href}">detalhes <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
         </article>
       `;
@@ -307,6 +310,7 @@
       const hasFilters = term || activeCategory !== "todos";
 
       grid.innerHTML = filtered.map(cardMarkup).join("");
+      grid.classList.toggle("is-solo", filtered.length === 1);
       resultCount.textContent = `${String(filtered.length).padStart(2, "0")} ${filtered.length === 1 ? "item" : "itens"}`;
       clearFilters.hidden = !hasFilters;
       featuredSection.hidden = hasFilters || featuredSection.dataset.empty === "true";
@@ -398,6 +402,22 @@
     if (initialQuery) {
       searchInput.value = initialQuery;
       term = normalize(initialQuery);
+    }
+
+    const revealTargets = document.querySelectorAll(".intro, .section, .cta-band");
+    if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: "0px 0px -12% 0px", threshold: 0.06 });
+
+      revealTargets.forEach((element) => {
+        element.classList.add("reveal");
+        observer.observe(element);
+      });
     }
 
     load();

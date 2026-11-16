@@ -129,6 +129,14 @@
       <a class="btn btn--outline" href="/">voltar ao catálogo</a>
     </section>
 
+    <div class="buy-bar" id="buy-bar" hidden>
+      <div class="buy-bar-info">
+        <span class="buy-bar-name" id="buy-bar-name"></span>
+        <span class="buy-bar-price" id="buy-bar-price"></span>
+      </div>
+      <a class="btn btn-buy" id="buy-bar-cta" href="#" target="_blank" rel="noopener">comprar <span aria-hidden="true">↗</span></a>
+    </div>
+
     <section id="product-error" class="state" hidden>
       <p class="state-code">!</p>
       <h1>Não carregou.</h1>
@@ -226,7 +234,10 @@
               ${product.category ? `<span class="card-category">${esc(product.category)}</span>` : ""}
               <h3><a href="${href}">${esc(product.name)}</a></h3>
             </div>
-            ${price}
+            <div class="card-foot">
+              ${price}
+              <a class="card-link" href="${href}">detalhes <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
         </article>
       `;
@@ -312,7 +323,15 @@
 
       description.textContent = product.description || "sem descrição. a foto já resolve.";
 
-      document.getElementById("product-buy").href = whatsappLink(product);
+      const buyLink = whatsappLink(product);
+      document.getElementById("product-buy").href = buyLink;
+
+      const buyBar = document.getElementById("buy-bar");
+      document.getElementById("buy-bar-name").textContent = product.name;
+      document.getElementById("buy-bar-price").textContent =
+        product.price === null || product.price === undefined ? "" : money.format(Number(product.price));
+      document.getElementById("buy-bar-cta").href = buyLink;
+      buyBar.hidden = false;
 
       const ogImage = new URL((productImages(product)[0] || {}).url || "", location.href).href;
       setMeta("og:title", product.name);
