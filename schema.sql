@@ -1,5 +1,17 @@
+-- ============================================================
+-- VG STORE — banco e bucket de fotos
+-- Cole este arquivo inteiro no Supabase: SQL Editor > New query > Run.
+-- Pode rodar mais de uma vez: ele não apaga nem duplica nada.
+--
+-- O painel do site (admin.html) NÃO usa login do Supabase: a senha
+-- fica no js/config.js. Por isso as regras abaixo liberam leitura e
+-- gravação com a chave pública (anon). Quem tiver a chave consegue
+-- escrever direto na API — é o preço de não ter login no banco.
+-- ============================================================
+
 create extension if not exists pgcrypto;
 
+-- ---------- tabela de produtos ----------
 create table if not exists public.products (
   id uuid primary key default gen_random_uuid(),
   name text not null,
@@ -16,150 +28,84 @@ create table if not exists public.products (
 
 alter table public.products enable row level security;
 
+-- ---------- regras de acesso (leitura pública, escrita pela chave pública) ----------
 drop policy if exists "products_public_read_active" on public.products;
-drop policy if exists "products_auth_read_all" on public.products;
-drop policy if exists "products_auth_insert" on public.products;
-drop policy if exists "products_auth_update" on public.products;
-drop policy if exists "products_auth_delete" on public.products;
+drop policy if exists "products_public_read_all" on public.products;
+drop policy if exists "products_public_insert" on public.products;
+drop policy if exists "products_public_update" on public.products;
+drop policy if exists "products_public_delete" on public.products;
 
-create policy "products_public_read_active"
+create policy "products_public_read_all"
 on public.products
 for select
-using (active = true);
-
-create policy "products_auth_read_all"
-on public.products
-for select
-to authenticated
+to anon, authenticated
 using (true);
 
-create policy "products_auth_insert"
+create policy "products_public_insert"
 on public.products
 for insert
-to authenticated
+to anon, authenticated
 with check (true);
 
-create policy "products_auth_update"
+create policy "products_public_update"
 on public.products
 for update
-to authenticated
+to anon, authenticated
 using (true)
 with check (true);
 
-create policy "products_auth_delete"
+create policy "products_public_delete"
 on public.products
 for delete
-to authenticated
+to anon, authenticated
 using (true);
 
-grant select on public.products to anon, authenticated;
-grant insert, update, delete on public.products to authenticated;
+grant select, insert, update, delete on public.products to anon, authenticated;
 
 create index if not exists products_active_created_idx
 on public.products (active, created_at desc);
 
+-- ---------- bucket de fotos ----------
+-- aceita jpg, png, webp, avif e gif até 15 MB (a foto sobe como está)
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('products', 'products', true, 5242880, array['image/webp'])
+values (
+  'products',
+  'products',
+  true,
+  15728640,
+  array['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif']
+)
 on conflict (id) do update
 set public = excluded.public,
     file_size_limit = excluded.file_size_limit,
     allowed_mime_types = excluded.allowed_mime_types;
 
 drop policy if exists "products_storage_public_read" on storage.objects;
-drop policy if exists "products_storage_auth_insert" on storage.objects;
-drop policy if exists "products_storage_auth_update" on storage.objects;
-drop policy if exists "products_storage_auth_delete" on storage.objects;
+drop policy if exists "products_storage_public_insert" on storage.objects;
+drop policy if exists "products_storage_public_update" on storage.objects;
+drop policy if exists "products_storage_public_delete" on storage.objects;
 
 create policy "products_storage_public_read"
 on storage.objects
 for select
+to anon, authenticated
 using (bucket_id = 'products');
 
-create policy "products_storage_auth_insert"
+create policy "products_storage_public_insert"
 on storage.objects
 for insert
-to authenticated
+to anon, authenticated
 with check (bucket_id = 'products');
 
-create policy "products_storage_auth_update"
+create policy "products_storage_public_update"
 on storage.objects
 for update
-to authenticated
+to anon, authenticated
 using (bucket_id = 'products')
 with check (bucket_id = 'products');
 
-create policy "products_storage_auth_delete"
+create policy "products_storage_public_delete"
 on storage.objects
 for delete
-to authenticated
+to anon, authenticated
 using (bucket_id = 'products');
-
-insert into auth.users (
-  instance_id,
-  id,
-  aud,
-  role,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at,
-  confirmation_token,
-  email_change,
-  email_change_token_new,
-  recovery_token
-)
-select
-  '00000000-0000-0000-0000-000000000000',
-  gen_random_uuid(),
-  'authenticated',
-  'authenticated',
-  'admin@loja.com',
-  crypt('admin123', gen_salt('bf')),
-  now(),
-  '{"provider":"email","providers":["email"]}'::jsonb,
-  '{}'::jsonb,
-  now(),
-  now(),
-  '',
-  '',
-  '',
-  ''
-where not exists (
-  select 1 from auth.users where email = 'admin@loja.com'
-);
-
-insert into auth.identities (
-  id,
-  user_id,
-  identity_data,
-  provider,
-  provider_id,
-  last_sign_in_at,
-  created_at,
-  updated_at
-)
-select
-  gen_random_uuid(),
-  u.id,
-  jsonb_build_object(
-    'sub', u.id::text,
-    'email', u.email,
-    'email_verified', true,
-    'phone_verified', false
-  ),
-  'email',
-  u.id::text,
-  now(),
-  now(),
-  now()
-from auth.users u
-where u.email = 'admin@loja.com'
-and not exists (
-  select 1
-  from auth.identities i
-  where i.user_id = u.id
-  and i.provider = 'email'
-);
