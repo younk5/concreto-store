@@ -45,23 +45,26 @@ Não existe etapa de build, `npm install` ou variável de ambiente no frontend.
 - A loja só mostra produtos com `active = true`; produto inativo ou inexistente retorna 404 amigável.
 - O admin redimensiona fotos para no máximo 1200 px, converte para WebP com qualidade 0.82 e envia ao bucket com nome único.
 - Ao trocar ou excluir um produto, remova também o arquivo antigo do Storage.
-- O login converte usuário `admin` para `admin@loja.com` e usa `signInWithPassword`.
+- Login do painel é local: usuário e senha fixos em `js/config.js`, sessão em `localStorage` (`vg-store-admin`). Não usa Supabase Auth.
 - Sessão do admin é persistente; sempre ofereça o botão sair.
-- Não adicione carrinho, checkout, pagamento, categorias fixas no código ou cadastro público.
+- Categorias sugeridas ficam num `datalist` fixo em `admin.html`; o campo continua livre.
+- Não adicione carrinho, checkout, pagamento ou cadastro público.
 
 ## Design
-- Marca: VG STORE, tagline "tecnologia ao seu alcance"; logo em `img/logo.png` e favicon em `img/favicon.svg`.
+- Marca: VG STORE, tagline "tecnologia ao seu alcance"; logo em `img/logo.webp` (PNG original em `img/logo.png`), cartão de compartilhamento em `img/og-image.jpg`, favicon em `img/favicon.svg`.
 - Lockup da marca no CSS (`.brand`): "VG" em gradiente cromado + "STORE" em laranja, ambos itálicos, com o arco em SVG (`.brand-swoosh`). Não recrie o logo como texto simples.
-- Paleta: fundo `#08080A`, superfícies `#0E0F13`/`#14161C`, texto `#F2F4F7`, apoio `#A8B0BD`, laranja `#FF4A00` (`--orange-hi` `#FF8C00`, `--orange-soft` `#FFB05C`).
+- Paleta da loja e do painel: fundo branco, texto `#0B0B0D`, apoio `#5B6068`, placas e rodapé `#08080A`, laranja `#FF4A00` (`--orange-hi` `#FF8C00`). O tema claro vive nos blocos "TEMA DA LOJA" no fim de `style.css` (escopos `body.store` e `body.admin-page`).
 - Fontes: Archivo 800/900 itálico nos títulos, Inter no texto, JetBrains Mono em rótulos e microcopy.
 - Permanecem: cromo (gradiente claro em títulos), sombras difusas, cantos 12–24 px, bordas de 1 px brancas translúcidas.
 - Referência de tom: fundo preto profundo, um único acento laranja, tipografia itálica grande e muito espaço; nada de roxo, azul ou gradientes arco-íris.
 - Mantenha transições entre 150 e 300 ms, foco visível laranja, contraste AA e `alt` nas imagens.
 
 ## Código
-- Mantenha o projeto sem build, sem frameworks e sem dependências além do CDN do Supabase e do Google Fonts.
-- Centralize chamadas ao Supabase em `js/api.js` e configurações em `js/config.js`.
+- Mantenha o projeto sem build e sem frameworks. O front fala com o Supabase por `fetch` direto (sem `supabase-js`); as únicas dependências externas são Google Fonts e a API do Supabase.
+- `api/p.js` e `api/sitemap.js` são funções do Vercel (Node, CommonJS): `/p/<id>` injeta título, og, canonical e JSON-LD do produto; `/sitemap.xml` lista home + produtos ativos. Rotas em `vercel.json`.
+- Centralize chamadas ao Supabase em `js/api.js` e configurações em `js/config.js`. Toda escrita manda o header `x-store-key` (chave em `js/config.js`); a política da migração 2 exige essa chave para insert/update/delete.
 - Use ES modules e mantenha a separação entre loja, produto e admin.
 - Evite comentários no código; nomes e mensagens devem ser claros por si.
 - Textos em português do Brasil, com voz curta e direta.
-- Antes de concluir, abra as três páginas, confira o console, teste busca/filtros, login, CRUD e o link do WhatsApp.
+- Fotos: até 6 por produto. `image_url`/`image_path` são a capa; `images` (jsonb) guarda `{url, path}` do resto. Sem a coluna `images` o painel cai para uma foto só e avisa.
+- Antes de concluir, abra as três páginas, confira o console, teste busca/filtros, login, CRUD, galeria e o link do WhatsApp.
