@@ -1,4 +1,4 @@
-# AGENTS.md — CONCRETO
+# AGENTS.md — VG STORE
 
 ## Visão geral
 Loja de eletrônicos com compra via WhatsApp. O catálogo é público; o painel usa Supabase Auth. O visual é streetwear editorial, mobile-first, sem build e sem framework.
@@ -50,12 +50,13 @@ Não existe etapa de build, `npm install` ou variável de ambiente no frontend.
 - Não adicione carrinho, checkout, pagamento, categorias fixas no código ou cadastro público.
 
 ## Design
-- Paleta: fundo `#F4F1EA`, texto `#0E0E0E`, destaque `#C6FF3D`; use apenas opacidades dessas cores.
-- Fontes: Bricolage Grotesque 800 nos títulos e Instrument Sans no texto.
-- Bordas pretas de 1.5 px, cantos retos e sombras sólidas com deslocamento.
-- Proibido: gradientes, glassmorphism, sombras difusas, emojis como ícone e cards arredondados.
-- Preserve tipografia grande, grid assimétrico, contraste forte, espaço em branco e microcopy direta.
-- Mantenha transições entre 150 e 200 ms, foco visível, contraste e `alt` nas imagens.
+- Marca: VG STORE, tagline "tecnologia ao seu alcance"; logo em `img/logo.png` e favicon em `img/favicon.svg`.
+- Lockup da marca no CSS (`.brand`): "VG" em gradiente cromado + "STORE" em laranja, ambos itálicos, com o arco em SVG (`.brand-swoosh`). Não recrie o logo como texto simples.
+- Paleta: fundo `#08080A`, superfícies `#0E0F13`/`#14161C`, texto `#F2F4F7`, apoio `#A8B0BD`, laranja `#FF4A00` (`--orange-hi` `#FF8C00`, `--orange-soft` `#FFB05C`).
+- Fontes: Archivo 800/900 itálico nos títulos, Inter no texto, JetBrains Mono em rótulos e microcopy.
+- Permanecem: cromo (gradiente claro em títulos), sombras difusas, cantos 12–24 px, bordas de 1 px brancas translúcidas.
+- Referência de tom: fundo preto profundo, um único acento laranja, tipografia itálica grande e muito espaço; nada de roxo, azul ou gradientes arco-íris.
+- Mantenha transições entre 150 e 300 ms, foco visível laranja, contraste AA e `alt` nas imagens.
 
 ## Código
 - Mantenha o projeto sem build, sem frameworks e sem dependências além do CDN do Supabase e do Google Fonts.

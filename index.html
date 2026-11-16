@@ -3,49 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#F4F1EA">
-  <meta name="description" content="Notebooks, TV boxes e acessórios escolhidos para durar. Compra direta pelo WhatsApp.">
-  <title>CONCRETO · tech de rua</title>
+  <meta name="theme-color" content="#08080A">
+  <meta name="description" content="Notebooks, TV boxes, áudio e acessórios selecionados. Compra direta pelo WhatsApp, com envio em até 24h.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="VG Store · Tecnologia ao seu alcance">
+  <meta property="og:description" content="Notebooks, TV boxes, áudio e acessórios selecionados. Compra direta pelo WhatsApp.">
+  <meta property="og:image" content="img/logo.png">
+  <title>VG Store · Tecnologia ao seu alcance</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
 
+  <div class="topline">
+    <span>tecnologia ao seu alcance</span>
+    <a href="#catalogo">ver catálogo</a>
+  </div>
+
   <header class="site-header">
     <div class="header-main">
-      <a class="brand" href="index.html" id="store-name">CONCRETO<span aria-hidden="true">.</span></a>
+      <a class="brand" href="index.html" id="store-name" aria-label="VG Store, página inicial">
+        <svg class="brand-swoosh" viewBox="0 0 124 34" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="swooshGrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#C82100"/>
+              <stop offset="0.45" stop-color="#FF5A0A"/>
+              <stop offset="1" stop-color="#FFB05C"/>
+            </linearGradient>
+          </defs>
+          <path d="M3 28C28 6 78 -2 121 12" fill="none" stroke="url(#swooshGrad)" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-type"><span class="brand-vg">VG</span><span class="brand-store">STORE</span></span>
+      </a>
+
+      <nav class="header-nav" aria-label="navegação principal">
+        <a href="#destaques">destaques</a>
+        <a href="#catalogo">catálogo</a>
+        <a href="#como-comprar">como comprar</a>
+      </nav>
+
       <form class="search" id="search-form" role="search" action="index.html">
         <label class="sr-only" for="search">buscar por nome</label>
+        <svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
         <input id="search" name="q" type="search" placeholder="buscar produto" autocomplete="off">
         <button type="submit" aria-label="buscar">→</button>
       </form>
-      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">whatsapp <span>↗</span></a>
+
+      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">
+        <span>whatsapp</span>
+        <span aria-hidden="true">↗</span>
+      </a>
     </div>
   </header>
 
   <div class="marquee" aria-label="avisos da loja">
     <div class="marquee-track">
-      <span>NOTEBOOKS E TV BOX</span><span class="sep">///</span>
-      <span>ENVIO EM ATÉ 24H</span><span class="sep">///</span>
-      <span>GARANTIA REAL</span><span class="sep">///</span>
-      <span>SUPORTE QUE RESPONDE</span><span class="sep">///</span>
-      <span aria-hidden="true">NOTEBOOKS E TV BOX</span><span class="sep" aria-hidden="true">///</span>
-      <span aria-hidden="true">ENVIO EM ATÉ 24H</span><span class="sep" aria-hidden="true">///</span>
-      <span aria-hidden="true">GARANTIA REAL</span><span class="sep" aria-hidden="true">///</span>
-      <span aria-hidden="true">SUPORTE QUE RESPONDE</span><span class="sep" aria-hidden="true">///</span>
+      <span>envio em até 24h</span><span class="sep" aria-hidden="true">◆</span>
+      <span>garantia real</span><span class="sep" aria-hidden="true">◆</span>
+      <span>atendimento humano</span><span class="sep" aria-hidden="true">◆</span>
+      <span>compra pelo whatsapp</span><span class="sep" aria-hidden="true">◆</span>
+      <span aria-hidden="true">envio em até 24h</span><span class="sep" aria-hidden="true">◆</span>
+      <span aria-hidden="true">garantia real</span><span class="sep" aria-hidden="true">◆</span>
+      <span aria-hidden="true">atendimento humano</span><span class="sep" aria-hidden="true">◆</span>
+      <span aria-hidden="true">compra pelo whatsapp</span><span class="sep" aria-hidden="true">◆</span>
     </div>
   </div>
 
   <main id="conteudo">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow">drop 07 / tech de rua</p>
-        <h1 id="hero-title">A RUA<br>NÃO TEM<br><span class="mark">BUFFER</span>.</h1>
-        <p class="hero-text">Notebooks, TV boxes e acessórios escolhidos para durar. Sem ficha técnica infinita: a gente explica o que importa e resolve no WhatsApp.</p>
-        <a class="hero-link" href="#catalogo">ver o drop inteiro <span>↓</span></a>
+        <p class="eyebrow">vg store <span class="dot" aria-hidden="true"></span> seleção 2026</p>
+        <h1 id="hero-title">tecnologia<br>ao seu<br><span class="mark">alcance.</span></h1>
+        <p class="hero-text">Notebooks, TV box, áudio e acessórios que a gente escolhe antes de vender. Sem ficha técnica infinita: você fala com uma pessoa e resolve tudo no WhatsApp.</p>
+
+        <div class="hero-actions">
+          <a class="btn btn-buy" href="#catalogo">ver catálogo <span aria-hidden="true">↓</span></a>
+          <a class="btn btn--ghost" id="hero-cta-wa" href="#" target="_blank" rel="noopener">
+            falar com especialista <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <ul class="hero-trust">
+          <li><span class="mono">01</span> envio em até 24h</li>
+          <li><span class="mono">02</span> garantia real</li>
+          <li><span class="mono">03</span> suporte que responde</li>
+        </ul>
       </div>
 
       <div class="hero-stage">
@@ -56,7 +105,7 @@
         </div>
 
         <article class="hero-product" id="hero-product" hidden>
-          <span class="tag tag--lime">em destaque</span>
+          <span class="tag tag--orange">em destaque</span>
           <a class="hero-media" id="hero-image-link" href="#">
             <img id="hero-image" src="" alt="" width="1200" height="1500">
           </a>
@@ -67,17 +116,24 @@
             </div>
             <div class="hero-buy">
               <p class="hero-price" id="hero-price"></p>
-              <a class="btn btn-buy" id="hero-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp</a>
+              <a class="btn btn-buy" id="hero-buy" href="#" target="_blank" rel="noopener">comprar agora</a>
             </div>
           </div>
         </article>
 
         <div class="hero-fallback" id="hero-fallback" hidden>
           <p class="micro" id="hero-fallback-label">estoque em pausa</p>
-          <p id="hero-fallback-text">O drop esgotou antes de começar. Volta na quinta — ou chama no WhatsApp.</p>
+          <p id="hero-fallback-text">O catálogo está sendo atualizado. Chama no WhatsApp que a gente te diz o que chegou.</p>
         </div>
       </div>
     </section>
+
+    <div class="trust-strip">
+      <div><span class="mono">envio</span><strong>até 24h</strong></div>
+      <div><span class="mono">garantia</span><strong>real e documentada</strong></div>
+      <div><span class="mono">suporte</span><strong>humano, no whatsapp</strong></div>
+      <div><span class="mono">curadoria</span><strong>produto por produto</strong></div>
+    </div>
 
     <section class="section featured-section" id="destaques" hidden>
       <div class="section-head">
@@ -89,7 +145,7 @@
 
     <section class="section catalog-section" id="catalogo">
       <div class="section-head">
-        <h2>todos os produtos</h2>
+        <h2>catálogo</h2>
         <span class="section-note" id="result-count"></span>
       </div>
 
@@ -112,31 +168,76 @@
       <div id="empty" class="state" hidden>
         <p class="state-code">00</p>
         <h2 id="empty-title">Nada com esse filtro.</h2>
-        <p id="empty-text">A rua é grande, mas o estoque é curto. Tenta outra categoria ou limpa tudo.</p>
+        <p id="empty-text">Tenta outra categoria, muda o termo da busca ou limpa tudo.</p>
         <button class="btn btn--outline" id="empty-clear" type="button">limpar filtros</button>
       </div>
 
       <div id="error" class="state" hidden>
         <p class="state-code">!</p>
-        <h2>Deu ruim no sinal.</h2>
-        <p>Não deu para carregar o estoque agora. Tenta de novo em instantes.</p>
+        <h2>Não carregou.</h2>
+        <p>O catálogo não respondeu agora. Tenta de novo em instantes.</p>
         <button class="btn btn--outline" id="retry" type="button">tentar de novo</button>
       </div>
 
       <noscript>
         <div class="state">
-          <h2>Sem JavaScript, sem drop.</h2>
+          <h2>Sem JavaScript, sem catálogo.</h2>
           <p>Ative o JavaScript para ver os produtos.</p>
         </div>
       </noscript>
+    </section>
+
+    <section class="section steps-section" id="como-comprar">
+      <div class="section-head">
+        <h2>como comprar</h2>
+        <span class="section-note">três passos, sem cadastro</span>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="step-num">01</span>
+          <h3>escolha o produto</h3>
+          <p>Filtre por categoria ou busque pelo nome. Cada página tem o que importa, sem enrolação.</p>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <h3>chame no whatsapp</h3>
+          <p>O botão já abre a conversa com o produto no texto. A gente confirma estoque e combina o envio.</p>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <h3>receba em casa</h3>
+          <p>Envio em até 24h com rastreio. Deu problema? A garantia é real e o suporte responde.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="cta-band" aria-labelledby="cta-title">
+      <div class="cta-band-text">
+        <p class="eyebrow">atendimento direto</p>
+        <h2 id="cta-title">tem dúvida<br>técnica?</h2>
+        <p>Fala com uma pessoa de verdade. Ajudamos a escolher sem empurrar o mais caro.</p>
+      </div>
+      <a class="btn btn-buy" id="band-wa" href="#" target="_blank" rel="noopener">chamar no whatsapp <span aria-hidden="true">↗</span></a>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <a class="footer-brand" href="index.html" id="footer-name">CONCRETO</a>
-      <p class="footer-note">tech de rua. estoque curto. conversa direta.</p>
+      <div class="footer-brand-block">
+        <img class="footer-logo" src="img/logo.png" alt="VG Store" width="1600" height="533" loading="lazy">
+        <p class="footer-note">Tecnologia ao seu alcance. Compra direta, sem carrinho e sem cadastro.</p>
+      </div>
+      <nav class="footer-nav" aria-label="navegação do rodapé">
+        <a href="#catalogo">catálogo</a>
+        <a href="#destaques">destaques</a>
+        <a href="#como-comprar">como comprar</a>
+        <a href="admin.html" rel="nofollow">painel</a>
+      </nav>
       <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+    </div>
+    <div class="footer-base">
+      <span>© 2026 VG Store</span>
+      <span class="mono">vg store · tecnologia ao seu alcance</span>
     </div>
   </footer>
 
@@ -170,21 +271,12 @@
     let activeCategory = "todos";
     let term = "";
 
-    document.getElementById("store-name").innerHTML = `${escapedStoreName()}<span aria-hidden="true">.</span>`;
-    document.getElementById("footer-name").textContent = STORE_NAME;
+    document.getElementById("store-name").setAttribute("aria-label", `${STORE_NAME}, página inicial`);
     document.getElementById("header-wa").href = waBase;
+    document.getElementById("hero-cta-wa").href = waBase;
+    document.getElementById("band-wa").href = waBase;
     document.getElementById("footer-wa").href = waBase;
-    document.title = `${STORE_NAME} · tech de rua`;
-
-    function escapedStoreName() {
-      return String(STORE_NAME).replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
+    document.title = `${STORE_NAME} · tecnologia ao seu alcance`;
 
     function esc(value) {
       return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -230,7 +322,7 @@
         <article class="product-card">
           <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
             <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
-            <span class="card-view">ver produto</span>
+            <span class="card-view">ver produto <span aria-hidden="true">↗</span></span>
           </a>
           <div class="card-info">
             <div class="card-text">
@@ -252,9 +344,9 @@
       document.getElementById("hero-image-link").href = href;
       document.getElementById("hero-name").textContent = product.name;
       document.getElementById("hero-name-link").href = href;
-      document.getElementById("hero-category").textContent = product.category || "produto do drop";
+      document.getElementById("hero-category").textContent = product.category || "produto do catálogo";
       document.getElementById("hero-price").textContent = product.price === null || product.price === undefined
-        ? ""
+        ? "preço no whatsapp"
         : money.format(Number(product.price));
       document.getElementById("hero-buy").href = whatsappLink(product);
 
@@ -303,12 +395,12 @@
       if (!filtered.length) {
         empty.hidden = false;
         if (!allProducts.length) {
-          document.getElementById("empty-title").textContent = "O drop esgotou antes de começar.";
-          document.getElementById("empty-text").textContent = "Nenhum produto no ar agora. Volta na quinta ou chama no WhatsApp para saber o que vem.";
+          document.getElementById("empty-title").textContent = "Catálogo em atualização.";
+          document.getElementById("empty-text").textContent = "Nenhum produto no ar agora. Chama no WhatsApp que a gente te diz o que chega primeiro.";
           emptyClear.hidden = true;
         } else {
           document.getElementById("empty-title").textContent = "Nada com esse filtro.";
-          document.getElementById("empty-text").textContent = "A rua é grande, mas o estoque é curto. Tenta outra categoria ou limpa tudo.";
+          document.getElementById("empty-text").textContent = "Tenta outra categoria, muda o termo da busca ou limpa tudo.";
           emptyClear.hidden = false;
         }
       } else {
@@ -337,7 +429,7 @@
       heroProduct.hidden = true;
       heroFallback.hidden = true;
       document.getElementById("hero-fallback-label").textContent = "estoque em pausa";
-      document.getElementById("hero-fallback-text").textContent = "O drop esgotou antes de começar. Volta na quinta — ou chama no WhatsApp.";
+      document.getElementById("hero-fallback-text").textContent = "O catálogo está sendo atualizado. Chama no WhatsApp que a gente te diz o que chegou.";
 
       try {
         allProducts = await listActiveProducts();
@@ -363,8 +455,8 @@
         skeleton.hidden = true;
         heroSkeleton.hidden = true;
         heroFallback.hidden = false;
-        document.getElementById("hero-fallback-label").textContent = "sinal fora do ar";
-        document.getElementById("hero-fallback-text").textContent = "Não deu para puxar o drop agora. Tenta de novo em instantes.";
+        document.getElementById("hero-fallback-label").textContent = "catálogo fora do ar";
+        document.getElementById("hero-fallback-text").textContent = "Não deu para puxar o catálogo agora. Tenta de novo em instantes.";
         errorState.hidden = false;
         featuredSection.hidden = true;
         resultCount.textContent = "fora do ar";

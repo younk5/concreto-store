@@ -3,39 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#F4F1EA">
-  <meta name="description" content="Detalhes do produto e compra pelo WhatsApp.">
+  <meta name="theme-color" content="#08080A">
+  <meta name="description" content="Detalhes do produto e compra pelo WhatsApp na VG Store.">
   <meta name="robots" content="index,follow" id="robots-meta">
   <meta property="og:type" content="product">
+  <meta property="og:site_name" content="VG Store">
   <meta property="og:title" content="">
   <meta property="og:description" content="">
-  <meta property="og:image" content="">
+  <meta property="og:image" content="img/logo.png">
   <meta property="og:url" content="">
-  <title>Produto</title>
+  <title>Produto · VG Store</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
 
+  <div class="topline">
+    <span>tecnologia ao seu alcance</span>
+    <a href="index.html">voltar à loja</a>
+  </div>
+
   <header class="site-header">
     <div class="header-main">
-      <a class="brand" href="index.html" id="store-name">CONCRETO<span aria-hidden="true">.</span></a>
+      <a class="brand" href="index.html" id="store-name" aria-label="VG Store, página inicial">
+        <svg class="brand-swoosh" viewBox="0 0 124 34" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="swooshGrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#C82100"/>
+              <stop offset="0.45" stop-color="#FF5A0A"/>
+              <stop offset="1" stop-color="#FFB05C"/>
+            </linearGradient>
+          </defs>
+          <path d="M3 28C28 6 78 -2 121 12" fill="none" stroke="url(#swooshGrad)" stroke-width="4.5" stroke-linecap="round"/>
+        </svg>
+        <span class="brand-type"><span class="brand-vg">VG</span><span class="brand-store">STORE</span></span>
+      </a>
+
+      <nav class="header-nav" aria-label="navegação principal">
+        <a href="index.html#destaques">destaques</a>
+        <a href="index.html#catalogo">catálogo</a>
+        <a href="index.html#como-comprar">como comprar</a>
+      </nav>
+
       <form class="search" role="search" action="index.html">
         <label class="sr-only" for="search">buscar por nome</label>
+        <svg class="search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
         <input id="search" name="q" type="search" placeholder="buscar produto" autocomplete="off">
         <button type="submit" aria-label="buscar">→</button>
       </form>
-      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">whatsapp <span>↗</span></a>
+
+      <a class="header-wa" id="header-wa" href="#" target="_blank" rel="noopener">
+        <span>whatsapp</span>
+        <span aria-hidden="true">↗</span>
+      </a>
     </div>
   </header>
 
   <main id="conteudo" class="product-main">
     <nav class="breadcrumb" aria-label="Você está aqui">
       <a href="index.html">loja</a>
-      <span>/</span>
+      <span aria-hidden="true">/</span>
       <span id="breadcrumb-name">produto</span>
     </nav>
 
@@ -58,50 +92,62 @@
       <div class="product-panel">
         <p class="eyebrow" id="product-category"></p>
         <h1 id="product-name"></h1>
-        <p class="product-price" id="product-price"></p>
         <p class="product-description" id="product-description"></p>
+        <p class="product-price" id="product-price"></p>
 
-        <a class="btn btn-buy" id="product-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp</a>
+        <a class="btn btn-buy" id="product-buy" href="#" target="_blank" rel="noopener">comprar no whatsapp <span aria-hidden="true">↗</span></a>
         <p class="product-note">sem carrinho, sem cadastro. a conversa é direta.</p>
 
         <div class="product-specs">
-          <div><span>envio</span><strong>até 24h</strong></div>
-          <div><span>troca</span><strong>sem drama</strong></div>
-          <div><span>atendimento</span><strong>humano</strong></div>
+          <div><span class="mono">envio</span><strong>até 24h</strong></div>
+          <div><span class="mono">garantia</span><strong>real</strong></div>
+          <div><span class="mono">suporte</span><strong>humano</strong></div>
         </div>
 
-        <a class="back-link" href="index.html">← voltar para o drop</a>
+        <a class="back-link" href="index.html">← voltar ao catálogo</a>
       </div>
     </article>
 
     <section id="related-section" class="section related-section" hidden>
       <div class="section-head">
-        <h2>você também pode gostar</h2>
-        <span class="section-note">mesma energia</span>
+        <h2>combina com</h2>
+        <span class="section-note">mesma prateleira</span>
       </div>
       <div id="related-grid" class="related-grid"></div>
     </section>
 
     <section id="not-found" class="state state--404" hidden>
       <p class="state-code">404</p>
-      <h1>Esse produto vazou.</h1>
-      <p>O link pode estar velho ou o produto saiu do ar. O resto do drop está inteiro.</p>
-      <a class="btn btn--outline" href="index.html">voltar para a loja</a>
+      <h1>Produto fora do ar.</h1>
+      <p>O link pode estar velho ou o produto saiu do catálogo. O resto da loja continua no ar.</p>
+      <a class="btn btn--outline" href="index.html">voltar ao catálogo</a>
     </section>
 
     <section id="product-error" class="state" hidden>
       <p class="state-code">!</p>
-      <h1>Sinal fora do ar.</h1>
-      <p>Não deu para abrir o produto agora. Tenta recarregar.</p>
+      <h1>Não carregou.</h1>
+      <p>O produto não respondeu agora. Tenta recarregar a página.</p>
       <button class="btn btn--outline" id="reload-product" type="button">recarregar</button>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <a class="footer-brand" href="index.html" id="footer-name">CONCRETO</a>
-      <p class="footer-note">tech de rua. estoque curto. conversa direta.</p>
+      <div class="footer-brand-block">
+        <img class="footer-logo" src="img/logo.png" alt="VG Store" width="1600" height="533" loading="lazy">
+        <p class="footer-note">Tecnologia ao seu alcance. Compra direta, sem carrinho e sem cadastro.</p>
+      </div>
+      <nav class="footer-nav" aria-label="navegação do rodapé">
+        <a href="index.html#catalogo">catálogo</a>
+        <a href="index.html#destaques">destaques</a>
+        <a href="index.html#como-comprar">como comprar</a>
+        <a href="admin.html" rel="nofollow">painel</a>
+      </nav>
       <a class="footer-wa" id="footer-wa" href="#" target="_blank" rel="noopener">whatsapp ↗</a>
+    </div>
+    <div class="footer-base">
+      <span>© 2026 VG Store</span>
+      <span class="mono">vg store · tecnologia ao seu alcance</span>
     </div>
   </footer>
 
@@ -122,8 +168,7 @@
     const relatedSection = document.getElementById("related-section");
     const relatedGrid = document.getElementById("related-grid");
 
-    document.getElementById("store-name").innerHTML = `${esc(STORE_NAME)}<span aria-hidden="true">.</span>`;
-    document.getElementById("footer-name").textContent = STORE_NAME;
+    document.getElementById("store-name").setAttribute("aria-label", `${STORE_NAME}, página inicial`);
     document.getElementById("header-wa").href = waBase;
     document.getElementById("footer-wa").href = waBase;
 
@@ -166,7 +211,7 @@
         <article class="product-card">
           <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
             <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
-            <span class="card-view">ver produto</span>
+            <span class="card-view">ver produto <span aria-hidden="true">↗</span></span>
           </a>
           <div class="card-info">
             <div class="card-text">
@@ -207,7 +252,7 @@
       notFound.hidden = false;
       document.title = `Produto não encontrado · ${STORE_NAME}`;
       setMeta("og:title", "Produto não encontrado");
-      setMeta("og:description", "Esse produto saiu do ar.");
+      setMeta("og:description", "Esse produto saiu do catálogo.");
       setMeta("og:image", "");
       setMeta("og:url", location.href);
       document.getElementById("robots-meta").setAttribute("content", "noindex,follow");
@@ -226,7 +271,7 @@
       image.src = product.image_url;
       image.alt = product.name;
 
-      category.textContent = product.category || "produto do drop";
+      category.textContent = product.category || "produto do catálogo";
 
       if (product.price === null || product.price === undefined) {
         price.hidden = true;
