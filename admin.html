@@ -94,7 +94,6 @@
             <div class="field">
               <label for="photo">foto *</label>
               <input id="photo" type="file" accept="image/*">
-              <p class="field-hint">jpg, png ou webp. vira webp 1200px antes de subir.</p>
               <div id="photo-preview" class="photo-preview" hidden></div>
             </div>
 
@@ -309,40 +308,6 @@
       photoPreview.innerHTML = `<img src="${esc(src)}" alt="prévia da foto" width="240" height="300">`;
     }
 
-    function toWebp(file) {
-      return new Promise((resolve, reject) => {
-        const source = URL.createObjectURL(file);
-        const image = new Image();
-
-        image.onload = () => {
-          URL.revokeObjectURL(source);
-
-          const max = 1200;
-          const scale = Math.min(1, max / Math.max(image.naturalWidth, image.naturalHeight));
-          const canvas = document.createElement("canvas");
-          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-
-          const context = canvas.getContext("2d");
-          context.fillStyle = "#0D0E11";
-          context.fillRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-          canvas.toBlob((blob) => {
-            if (blob) resolve(blob);
-            else reject(new Error("Falha ao converter a imagem."));
-          }, "image/webp", 0.82);
-        };
-
-        image.onerror = () => {
-          URL.revokeObjectURL(source);
-          reject(new Error("Imagem inválida."));
-        };
-
-        image.src = source;
-      });
-    }
-
     function resetForm() {
       editingId = null;
       existingImage = null;
@@ -478,41 +443,21 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    photoInput.addEventListener("change", async () => {
+    photoInput.addEventListener("change", () => {
       const file = photoInput.files && photoInput.files[0];
       if (!file) return;
 
       if (!file.type.startsWith("image/")) {
-        notify("manda uma imagem de verdade (jpg, png ou webp).", "error");
+        notify("manda um arquivo de imagem.", "error");
         photoInput.value = "";
         return;
       }
 
-      const token = ++photoToken;
-      photoBlob = null;
-      processingPhoto = true;
-      saveButton.disabled = true;
-      photoPreview.hidden = false;
-      photoPreview.innerHTML = '<p class="preview-loading">processando...</p>';
-
-      try {
-        const blob = await toWebp(file);
-        if (token !== photoToken) return;
-        photoBlob = blob;
-        showPreview(URL.createObjectURL(blob), true);
-      } catch (failure) {
-        console.error(failure);
-        if (token !== photoToken) return;
-        photoBlob = null;
-        photoInput.value = "";
-        clearPreview();
-        notify("não deu para processar essa foto. tenta outra.", "error");
-      } finally {
-        if (token === photoToken) {
-          processingPhoto = false;
-          saveButton.disabled = false;
-        }
-      }
+      photoToken += 1;
+      photoBlob = file;
+      processingPhoto = false;
+      saveButton.disabled = false;
+      showPreview(URL.createObjectURL(file), true);
     });
 
     productForm.addEventListener("submit", async (event) => {

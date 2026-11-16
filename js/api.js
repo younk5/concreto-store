@@ -95,14 +95,24 @@ export async function signOut() {
   if (error) throw error;
 }
 
+const EXT_BY_TYPE = {
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/avif": "avif",
+  "image/gif": "gif"
+};
+
 export async function uploadProductImage(blob) {
   const random = crypto.randomUUID
     ? crypto.randomUUID()
     : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  const path = `${random}.webp`;
+  const type = blob.type || "image/jpeg";
+  const path = `${random}.${EXT_BY_TYPE[type] || "jpg"}`;
 
   const { error } = await db().storage.from(BUCKET).upload(path, blob, {
-    contentType: "image/webp",
+    contentType: type,
     cacheControl: "31536000",
     upsert: false
   });
