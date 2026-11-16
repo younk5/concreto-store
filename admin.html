@@ -398,9 +398,9 @@
         renderList();
       } catch (failure) {
         console.error(failure);
-        adminList.innerHTML = "";
-        adminCount.textContent = "";
-        notify("não deu para carregar o estoque. atualiza a página.", "error");
+        adminList.innerHTML = '<p class="admin-empty">catálogo fora do ar — o painel não conseguiu falar com a base de produtos (confira <span class="mono">js/config.js</span>).</p>';
+        adminCount.textContent = "—";
+        notify("não deu para carregar o estoque. confira js/config.js.", "error");
       }
     }
 
