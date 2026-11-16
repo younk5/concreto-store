@@ -20,24 +20,24 @@
   <meta name="twitter:description" content="Detalhes do produto e compra pelo WhatsApp na VG Store.">
   <meta name="twitter:image" content="https://concreto-store-main.vercel.app/img/og-image.jpg">
   <title>Produto · VG Store</title>
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;1,700;1,800;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body class="store">
   <a class="skip-link" href="#conteudo">pular para o conteúdo</a>
 
   <div class="topline">
     <span>compra direta no whatsapp</span>
-    <a href="index.html">voltar à loja</a>
+    <a href="/">voltar à loja</a>
   </div>
 
   <header class="site-header">
     <div class="header-main">
       <div class="brand-block">
-      <a class="brand" href="index.html" id="store-name" aria-label="VG Store, página inicial">
+      <a class="brand" href="/" id="store-name" aria-label="VG Store, página inicial">
         <svg class="brand-swoosh" viewBox="0 0 124 34" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="swooshGrad" x1="0" y1="1" x2="1" y2="0">
@@ -73,7 +73,7 @@
 
   <main id="conteudo" class="product-main">
     <nav class="breadcrumb" aria-label="Você está aqui">
-      <a href="index.html">loja</a>
+      <a href="/">loja</a>
       <span aria-hidden="true">/</span>
       <span id="breadcrumb-name">produto</span>
     </nav>
@@ -110,7 +110,7 @@
           <div><span class="mono">suporte</span><strong>humano</strong></div>
         </div>
 
-        <a class="back-link" href="index.html">← voltar ao catálogo</a>
+        <a class="back-link" href="/">← voltar ao catálogo</a>
       </div>
     </article>
 
@@ -126,7 +126,7 @@
       <p class="state-code">404</p>
       <h1>Produto fora do ar.</h1>
       <p>O link pode estar velho ou o produto saiu do catálogo. O resto da loja continua no ar.</p>
-      <a class="btn btn--outline" href="index.html">voltar ao catálogo</a>
+      <a class="btn btn--outline" href="/">voltar ao catálogo</a>
     </section>
 
     <section id="product-error" class="state" hidden>
@@ -140,7 +140,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand-block">
-        <img class="footer-logo" src="img/logo.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
+        <img class="footer-logo" src="/img/logo.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
         <p class="footer-note">Tecnologia ao seu alcance. Compra direta, sem carrinho e sem cadastro.</p>
       </div>
       <nav class="footer-nav" aria-label="navegação do rodapé">
@@ -158,8 +158,8 @@
   </footer>
 
   <script type="module">
-    import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
-    import { getActiveProduct, listActiveProducts, productImages } from "./js/api.js";
+    import { STORE_NAME, WHATSAPP_NUMBER } from "/js/config.js";
+    import { getActiveProduct, listActiveProducts, productImages } from "/js/api.js";
 
     const waBase = `https://wa.me/${WHATSAPP_NUMBER}`;
     const money = new Intl.NumberFormat("pt-BR", {
