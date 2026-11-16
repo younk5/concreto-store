@@ -154,20 +154,17 @@
   </footer>
 
   <script type="module">
-    import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
+    import { ADMIN_PASSWORD, ADMIN_USER, STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
     import {
       createProduct,
       deleteProduct,
-      getSession,
       listAllProducts,
       removeProductImage,
-      signIn,
-      signOut,
       updateProduct,
       uploadProductImage
     } from "./js/api.js";
 
-    const ADMIN_EMAIL = "admin@loja.com";
+    const SESSION_KEY = "vg-store-admin";
     const money = new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL"
@@ -210,6 +207,30 @@
     document.getElementById("store-name").setAttribute("aria-label", `${STORE_NAME}, página inicial`);
     document.getElementById("footer-wa").href = `https://wa.me/${WHATSAPP_NUMBER}`;
     document.title = `painel · ${STORE_NAME}`;
+
+    function isLoggedIn() {
+      try {
+        return localStorage.getItem(SESSION_KEY) === "ok";
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function startSession() {
+      try {
+        localStorage.setItem(SESSION_KEY, "ok");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function endSession() {
+      try {
+        localStorage.removeItem(SESSION_KEY);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
     function esc(value) {
       return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -436,40 +457,23 @@
         return;
       }
 
-      if (user !== "admin") {
+      if (user !== ADMIN_USER.toLowerCase() || password !== ADMIN_PASSWORD) {
         setLoginError("usuário ou senha incorretos.");
+        loginPassword.select();
         return;
       }
 
       setLoginBusy(true);
       setLoginError("");
 
-      try {
-        await signIn(ADMIN_EMAIL, password);
-        loginForm.reset();
-        await enterPanel();
-      } catch (failure) {
-        console.error(failure);
-        const reason = String(failure?.message || "").toLowerCase();
-        setLoginError(
-          reason.includes("invalid login credentials")
-            ? "usuário ou senha incorretos."
-            : "não deu para entrar agora. confira a conexão e tenta de novo."
-        );
-      } finally {
-        setLoginBusy(false);
-      }
+      startSession();
+      loginForm.reset();
+      await enterPanel();
+      setLoginBusy(false);
     });
 
-    logoutButton.addEventListener("click", async () => {
-      logoutButton.disabled = true;
-      try {
-        await signOut();
-      } catch (failure) {
-        console.error(failure);
-      } finally {
-        logoutButton.disabled = false;
-      }
+    logoutButton.addEventListener("click", () => {
+      endSession();
       showLogin();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -647,14 +651,10 @@
     });
 
     async function init() {
-      try {
-        const session = await getSession();
-        if (session) await enterPanel();
-        else showLogin();
-      } catch (failure) {
-        console.error(failure);
+      if (isLoggedIn()) {
+        await enterPanel();
+      } else {
         showLogin();
-        setLoginError("não deu para conectar. confira js/config.js e a conexão.");
       }
     }
 
