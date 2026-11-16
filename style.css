@@ -2858,3 +2858,150 @@ body.admin-page .toast {
   background: #0b0b0d;
   border-color: rgba(255, 74, 0, 0.55);
 }
+
+/* ==========================================================================
+   GALERIA, ESTOQUE E CATEGORIAS — laranja, branco e preto
+   ========================================================================== */
+
+.product-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.product-thumbs .thumb {
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface-3);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-thumbs .thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-thumbs .thumb:hover {
+  border-color: #ff8c00;
+}
+
+.product-thumbs .thumb.is-active {
+  border-color: #ff4a00;
+  box-shadow: 0 0 0 2px rgba(255, 74, 0, 0.32);
+}
+
+body.admin-page .photo-preview--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+body.admin-page .photo-item {
+  position: relative;
+  margin: 0;
+}
+
+body.admin-page .photo-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+}
+
+body.admin-page .photo-cover {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  background: #08080a;
+  color: #ff8c00;
+  font-family: var(--mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+body.admin-page .photo-remove {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: #ffffff;
+  color: #0b0b0d;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(11, 11, 13, 0.18);
+}
+
+body.admin-page .photo-remove:hover {
+  background: #ff4a00;
+  border-color: #ff4a00;
+  color: #ffffff;
+}
+
+body.admin-page .stock-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 2px;
+}
+
+body.admin-page .stock-tools input,
+body.admin-page .stock-tools select {
+  flex: 1 1 170px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+}
+
+body.admin-page .stock-tools select {
+  flex: 0 0 auto;
+}
+
+body.admin-page .stock-tools input:focus,
+body.admin-page .stock-tools select:focus {
+  outline: 2px solid rgba(255, 74, 0, 0.45);
+  outline-offset: 1px;
+}
+
+body.admin-page .admin-row-thumb {
+  position: relative;
+}
+
+body.admin-page .admin-row-thumb img {
+  display: block;
+}
+
+body.admin-page .badge--count {
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  padding: 2px 5px;
+  border: 0;
+  border-radius: 4px;
+  background: #08080a;
+  color: #ff8c00;
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.08em;
+}

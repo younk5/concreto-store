@@ -88,14 +88,27 @@
               </div>
               <div class="field">
                 <label for="category">categoria</label>
-                <input id="category" type="text" maxlength="40" autocomplete="off" placeholder="notebook, tv box...">
+                <input id="category" type="text" maxlength="40" autocomplete="off" placeholder="notebook, tv box..." list="category-options">
+                <datalist id="category-options">
+                  <option value="Notebook"></option>
+                  <option value="Smartphone"></option>
+                  <option value="Tablet"></option>
+                  <option value="TV Box"></option>
+                  <option value="Audio"></option>
+                  <option value="Acessorio"></option>
+                  <option value="Monitor"></option>
+                  <option value="Console"></option>
+                  <option value="Periferico"></option>
+                  <option value="Outro"></option>
+                </datalist>
               </div>
             </div>
 
             <div class="field">
-              <label for="photo">foto *</label>
-              <input id="photo" type="file" accept="image/*">
-              <div id="photo-preview" class="photo-preview" hidden></div>
+              <label for="photo">fotos</label>
+              <input id="photo" type="file" accept="image/*" multiple>
+              <p class="field-hint">ate 6 fotos. a primeira vira a capa do catalogo.</p>
+              <div id="photo-preview" class="photo-preview photo-preview--grid" hidden></div>
             </div>
 
             <div class="field">
@@ -120,6 +133,15 @@
           <div class="list-head">
             <h2 id="list-title">estoque</h2>
             <span id="admin-count" class="section-note"></span>
+          </div>
+          <div class="stock-tools">
+            <input id="stock-search" type="search" placeholder="buscar no estoque" autocomplete="off" aria-label="buscar no estoque">
+            <select id="stock-sort" aria-label="ordenar estoque">
+              <option value="recent">mais recentes</option>
+              <option value="name">nome a-z</option>
+              <option value="price-asc">menor preco</option>
+              <option value="price-desc">maior preco</option>
+            </select>
           </div>
           <div id="admin-list" class="admin-list"></div>
           <div id="list-empty" class="state state--small" hidden>
@@ -159,6 +181,7 @@
       createProduct,
       deleteProduct,
       listAllProducts,
+      productImages,
       removeProductImage,
       updateProduct,
       uploadProductImage
@@ -191,15 +214,18 @@
     const saveButton = document.getElementById("save-button");
     const cancelEdit = document.getElementById("cancel-edit");
     const adminList = document.getElementById("admin-list");
+    const stockSearch = document.getElementById("stock-search");
+    const stockSort = document.getElementById("stock-sort");
     const listEmpty = document.getElementById("list-empty");
     const adminCount = document.getElementById("admin-count");
     const toast = document.getElementById("toast");
 
     let products = [];
     let editingId = null;
-    let existingImage = null;
-    let photoBlob = null;
-    let previewUrl = null;
+    let originalImages = [];
+    let existingImages = [];
+    let newFiles = [];
+    let previewUrls = [];
     let processingPhoto = false;
     let photoToken = 0;
     let toastTimer = null;
@@ -289,43 +315,98 @@
       return Number.isFinite(value) ? value : NaN;
     }
 
-    function revokePreview() {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-        previewUrl = null;
-      }
+    function revokePreviews() {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      previewUrls = [];
     }
 
     function clearPreview() {
-      revokePreview();
+      revokePreviews();
       photoPreview.hidden = true;
       photoPreview.innerHTML = "";
     }
 
-    function showPreview(src, isObjectUrl = false) {
-      revokePreview();
-      if (isObjectUrl) previewUrl = src;
+    function renderPreview() {
+      revokePreviews();
+
+      const items = [
+        ...existingImages.map((image, index) => ({
+          src: image.url,
+          kind: "existing",
+          index
+        })),
+        ...newFiles.map((file, index) => {
+          const url = URL.createObjectURL(file);
+          previewUrls.push(url);
+          return { src: url, kind: "new", index };
+        })
+      ];
+
+      if (!items.length) {
+        clearPreview();
+        return;
+      }
+
       photoPreview.hidden = false;
-      photoPreview.innerHTML = `<img src="${esc(src)}" alt="prévia da foto" width="240" height="300">`;
+      photoPreview.innerHTML = items.map((item, position) => `
+        <figure class="photo-item">
+          <img src="${esc(item.src)}" alt="foto ${position + 1}" width="160" height="200">
+          ${position === 0 ? '<span class="photo-cover">capa</span>' : ""}
+          <button type="button" class="photo-remove" data-kind="${item.kind}" data-index="${item.index}" aria-label="remover foto ${position + 1}">x</button>
+        </figure>
+      `).join("");
+    }
+
+    function resetPhotos() {
+      existingImages = [];
+      newFiles = [];
+      originalImages = [];
+      photoInput.value = "";
+      clearPreview();
     }
 
     function resetForm() {
       editingId = null;
-      existingImage = null;
-      photoBlob = null;
+      resetPhotos();
       processingPhoto = false;
       photoToken += 1;
       productForm.reset();
       photoInput.value = "";
-      clearPreview();
       formTitle.textContent = "novo produto";
       saveButton.textContent = "salvar produto";
       saveButton.disabled = false;
       cancelEdit.hidden = true;
     }
 
+    function plain(value) {
+      return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+    }
+
+    function visibleProducts() {
+      const term = plain(stockSearch.value).trim();
+      const sort = stockSort.value;
+
+      const filtered = term
+        ? products.filter((product) => plain(`${product.name} ${product.category}`).includes(term))
+        : products.slice();
+
+      const price = (product) =>
+        product.price === null || product.price === undefined ? Infinity : Number(product.price);
+
+      if (sort === "name") filtered.sort((a, b) => String(a.name).localeCompare(String(b.name), "pt-BR"));
+      else if (sort === "price-asc") filtered.sort((a, b) => price(a) - price(b));
+      else if (sort === "price-desc") filtered.sort((a, b) => price(b) - price(a));
+      else filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      return filtered;
+    }
+
     function renderList() {
-      adminCount.textContent = `${String(products.length).padStart(2, "0")} ${products.length === 1 ? "item" : "itens"}`;
+      const shown = visibleProducts();
+      adminCount.textContent = `${String(shown.length).padStart(2, "0")} de ${String(products.length).padStart(2, "0")} ${products.length === 1 ? "item" : "itens"}`;
       listEmpty.hidden = products.length > 0;
 
       if (!products.length) {
@@ -333,9 +414,19 @@
         return;
       }
 
-      adminList.innerHTML = products.map((product) => `
+      if (!shown.length) {
+        adminList.innerHTML = '<p class="admin-empty">nenhum produto com esse nome.</p>';
+        return;
+      }
+
+      adminList.innerHTML = shown.map((product) => {
+        const gallery = productImages(product);
+        return `
         <article class="admin-row" data-id="${esc(product.id)}">
-          <img src="${esc(product.image_url)}" alt="" width="90" height="112" loading="lazy">
+          <div class="admin-row-thumb">
+            <img src="${esc(gallery.length ? gallery[0].url : "")}" alt="" width="90" height="112" loading="lazy">
+            ${gallery.length > 1 ? `<span class="badge badge--count">${gallery.length} fotos</span>` : ""}
+          </div>
           <div class="admin-row-info">
             <div class="admin-row-top">
               <h3>${esc(product.name)}</h3>
@@ -352,7 +443,8 @@
             <button type="button" class="danger" data-action="delete" data-id="${esc(product.id)}">excluir</button>
           </div>
         </article>
-      `).join("");
+      `;
+      }).join("");
     }
 
     async function loadProducts() {
@@ -372,8 +464,9 @@
 
     function startEdit(product) {
       editingId = product.id;
-      existingImage = { url: product.image_url, path: product.image_path };
-      photoBlob = null;
+      originalImages = productImages(product);
+      existingImages = originalImages.slice();
+      newFiles = [];
       processingPhoto = false;
       photoToken += 1;
 
@@ -386,7 +479,7 @@
       featuredInput.checked = Boolean(product.featured);
       photoInput.value = "";
 
-      showPreview(product.image_url);
+      renderPreview();
       formTitle.textContent = "editar produto";
       saveButton.textContent = "salvar alterações";
       cancelEdit.hidden = false;
@@ -445,20 +538,41 @@
     });
 
     photoInput.addEventListener("change", () => {
-      const file = photoInput.files && photoInput.files[0];
-      if (!file) return;
+      const files = Array.from(photoInput.files || []);
+      photoInput.value = "";
+      if (!files.length) return;
 
-      if (!file.type.startsWith("image/")) {
-        notify("manda um arquivo de imagem.", "error");
-        photoInput.value = "";
+      const images = files.filter((file) => file.type.startsWith("image/"));
+      if (images.length !== files.length) {
+        notify("só sobe arquivo de imagem.", "error");
+      }
+
+      const room = 6 - existingImages.length - newFiles.length;
+      if (room <= 0) {
+        notify("limite de 6 fotos por produto.", "error");
         return;
       }
 
+      if (images.length > room) {
+        notify(`cabem mais ${room} foto(s) nesse produto.`, "error");
+      }
+
+      newFiles = newFiles.concat(images.slice(0, room));
       photoToken += 1;
-      photoBlob = file;
       processingPhoto = false;
       saveButton.disabled = false;
-      showPreview(URL.createObjectURL(file), true);
+      renderPreview();
+    });
+
+    photoPreview.addEventListener("click", (event) => {
+      const button = event.target.closest(".photo-remove");
+      if (!button) return;
+
+      const index = Number(button.dataset.index);
+      if (button.dataset.kind === "existing") existingImages.splice(index, 1);
+      else newFiles.splice(index, 1);
+
+      renderPreview();
     });
 
     productForm.addEventListener("submit", async (event) => {
@@ -480,8 +594,8 @@
         return;
       }
 
-      if (!editingId && !photoBlob) {
-        notify("a foto é obrigatória.", "error");
+      if (!editingId && !newFiles.length) {
+        notify("a primeira foto é obrigatória.", "error");
         photoInput.focus();
         return;
       }
@@ -493,7 +607,7 @@
       }
 
       setSaving(true);
-      let uploaded = null;
+      const uploaded = [];
 
       try {
         const payload = {
@@ -504,28 +618,45 @@
           featured: featuredInput.checked
         };
 
-        if (photoBlob) {
-          uploaded = await uploadProductImage(photoBlob);
-          payload.image_url = uploaded.url;
-          payload.image_path = uploaded.path;
+        for (const file of newFiles) {
+          uploaded.push(await uploadProductImage(file));
         }
 
+        const gallery = [...existingImages, ...uploaded];
+
+        if (gallery.length) {
+          payload.image_url = gallery[0].url;
+          payload.image_path = gallery[0].path || null;
+          payload.images = gallery.slice(1).map((image) => ({ url: image.url, path: image.path || null }));
+        }
+
+        let saved = null;
+
         if (editingId) {
-          await updateProduct(editingId, payload);
-
-          if (uploaded && existingImage?.path) {
-            try {
-              await removeProductImage(existingImage.path);
-            } catch (cleanupFailure) {
-              console.error(cleanupFailure);
-            }
-          }
-
+          saved = await updateProduct(editingId, payload);
           notify("produto atualizado. já está na loja.");
         } else {
           payload.active = true;
-          await createProduct(payload);
+          saved = await createProduct(payload);
           notify("produto salvo. já está no ar.");
+        }
+
+        // banco sem a coluna images: só a capa foi guardada
+        if (payload.images && payload.images.length) {
+          const total = Array.isArray(saved && saved.images) ? saved.images.length : 0;
+          if (total !== payload.images.length) {
+            setTimeout(() => notify("só a capa foi salva: rode o SQL da migração 2 no Supabase para guardar a galeria.", "error"), 1600);
+          }
+        }
+
+        const kept = new Set(existingImages.map((image) => image.path));
+        for (const image of originalImages) {
+          if (!image.path || kept.has(image.path)) continue;
+          try {
+            await removeProductImage(image.path);
+          } catch (cleanupFailure) {
+            console.error(cleanupFailure);
+          }
         }
 
         resetForm();
@@ -533,9 +664,9 @@
       } catch (failure) {
         console.error(failure);
 
-        if (uploaded) {
+        for (const image of uploaded) {
           try {
-            await removeProductImage(uploaded.path);
+            await removeProductImage(image.path);
           } catch (cleanupFailure) {
             console.error(cleanupFailure);
           }
@@ -577,7 +708,14 @@
             return;
           }
 
-          await removeProductImage(product.image_path);
+          for (const image of productImages(product)) {
+            if (!image.path) continue;
+            try {
+              await removeProductImage(image.path);
+            } catch (cleanupFailure) {
+              console.error(cleanupFailure);
+            }
+          }
           await deleteProduct(id);
 
           if (editingId === id) resetForm();
@@ -595,6 +733,9 @@
         button.disabled = false;
       }
     });
+
+    stockSearch.addEventListener("input", renderList);
+    stockSort.addEventListener("change", renderList);
 
     async function init() {
       if (isLoggedIn()) {

@@ -184,7 +184,7 @@
 
   <script type="module">
     import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
-    import { listActiveProducts } from "./js/api.js";
+    import { listActiveProducts, productImages } from "./js/api.js";
 
     const featuredSection = document.getElementById("destaques");
     const featuredGrid = document.getElementById("featured-grid");
@@ -234,7 +234,7 @@
     }
 
     function productHref(product) {
-      return `produto.html?id=${encodeURIComponent(product.id)}`;
+      return `/p/${encodeURIComponent(product.id)}`;
     }
 
     function whatsappLink(product) {
@@ -251,6 +251,8 @@
 
     function cardMarkup(product) {
       const href = productHref(product);
+      const cover = productImages(product)[0];
+      const photo = cover ? cover.url : "";
       const category = product.category
         ? `<span class="card-category">${esc(product.category)}</span>`
         : "";
@@ -258,7 +260,7 @@
       return `
         <article class="product-card">
           <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
-            <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
+            <img src="${esc(photo)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy" decoding="async">
             <span class="card-view">ver produto <span aria-hidden="true">↗</span></span>
           </a>
           <div class="card-info">

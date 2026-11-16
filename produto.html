@@ -12,6 +12,7 @@
   <meta property="og:image" content="https://concreto-store-main.vercel.app/img/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <link rel="canonical" href="https://concreto-store-main.vercel.app/produto">
   <meta property="og:url" content="https://concreto-store-main.vercel.app/produto">
   <meta name="theme-color" content="#FF4A00">
   <meta name="twitter:card" content="summary_large_image">
@@ -90,8 +91,9 @@
 
     <article id="product-view" class="product-detail" hidden>
       <div class="product-gallery">
-        <img id="product-image" src="" alt="" width="1200" height="1500" loading="lazy">
+        <img id="product-image" src="" alt="" width="1200" height="1500" loading="lazy" decoding="async">
       </div>
+      <div id="product-thumbs" class="product-thumbs" hidden></div>
 
       <div class="product-panel">
         <p class="eyebrow" id="product-category"></p>
@@ -157,7 +159,7 @@
 
   <script type="module">
     import { STORE_NAME, WHATSAPP_NUMBER } from "./js/config.js";
-    import { getActiveProduct, listActiveProducts } from "./js/api.js";
+    import { getActiveProduct, listActiveProducts, productImages } from "./js/api.js";
 
     const waBase = `https://wa.me/${WHATSAPP_NUMBER}`;
     const money = new Intl.NumberFormat("pt-BR", {
@@ -197,7 +199,7 @@
     }
 
     function productHref(product) {
-      return `produto.html?id=${encodeURIComponent(product.id)}`;
+      return `/p/${encodeURIComponent(product.id)}`;
     }
 
     function whatsappLink(product) {
@@ -207,6 +209,8 @@
 
     function relatedCard(product) {
       const href = productHref(product);
+      const cover = productImages(product)[0];
+      const photo = cover ? cover.url : "";
       const price = product.price === null || product.price === undefined
         ? ""
         : `<span class="price">${money.format(Number(product.price))}</span>`;
@@ -214,7 +218,7 @@
       return `
         <article class="product-card">
           <a class="card-media" href="${href}" aria-label="ver ${esc(product.name)}">
-            <img src="${esc(product.image_url)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy">
+            <img src="${esc(photo)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy" decoding="async">
             <span class="card-view">ver produto <span aria-hidden="true">↗</span></span>
           </a>
           <div class="card-info">
@@ -272,8 +276,31 @@
       document.getElementById("product-name").textContent = product.name;
       document.getElementById("breadcrumb-name").textContent = product.name;
 
-      image.src = product.image_url;
-      image.alt = product.name;
+      const photos = productImages(product);
+      const thumbs = document.getElementById("product-thumbs");
+
+      if (photos.length) {
+        image.src = photos[0].url;
+        image.alt = product.name;
+      }
+
+      if (photos.length > 1) {
+        thumbs.innerHTML = photos.map((photo, index) => `
+          <button class="thumb${index === 0 ? " is-active" : ""}" type="button" data-src="${esc(photo.url)}" aria-label="foto ${index + 1}">
+            <img src="${esc(photo.url)}" alt="" width="120" height="150" loading="lazy" decoding="async">
+          </button>
+        `).join("");
+        thumbs.hidden = false;
+        thumbs.querySelectorAll(".thumb").forEach((button) => {
+          button.addEventListener("click", () => {
+            image.src = button.dataset.src;
+            thumbs.querySelectorAll(".thumb").forEach((other) => other.classList.toggle("is-active", other === button));
+          });
+        });
+      } else {
+        thumbs.innerHTML = "";
+        thumbs.hidden = true;
+      }
 
       category.textContent = product.category || "produto do catálogo";
 
@@ -287,7 +314,7 @@
 
       document.getElementById("product-buy").href = whatsappLink(product);
 
-      const ogImage = new URL(product.image_url, location.href).href;
+      const ogImage = new URL((productImages(product)[0] || {}).url || "", location.href).href;
       setMeta("og:title", product.name);
       setMeta("og:description", (product.description || `Conheça ${product.name} na ${STORE_NAME}.`).slice(0, 180));
       setMeta("og:image", ogImage);
@@ -302,7 +329,8 @@
     }
 
     async function load() {
-      const id = new URLSearchParams(location.search).get("id");
+      const fromPath = (location.pathname.match(/\/p\/([0-9a-fA-F-]{36})/) || [])[1];
+      const id = new URLSearchParams(location.search).get("id") || fromPath;
       const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
       if (!id || !uuid.test(id)) {
