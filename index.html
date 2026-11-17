@@ -29,7 +29,7 @@
   <header class="site-header">
     <div class="header-main">
       <a class="brand" href="/" id="store-name" aria-label="VG Store, página inicial">
-        <span class="brand-type"><span class="brand-vg">VG</span><span class="brand-store">STORE</span></span>
+        <img class="brand-logo" src="/img/logo-header.webp" alt="VG Store" width="300" height="80" fetchpriority="high" decoding="async">
       </a>
 
       <form class="search" id="search-form" role="search" action="/">
@@ -45,7 +45,7 @@
   <main id="conteudo">
     <section class="shop-intro" aria-labelledby="shop-title">
       <div class="shop-copy">
-        <h1 id="shop-title">Notebook, som<br>e acessório.</h1>
+        <h1 id="shop-title">Notebooks, som<br>e acessórios.</h1>
         <p>Catálogo curto, escolhido peça por peça. A compra fecha numa conversa de WhatsApp, sem cadastro e sem carrinho.</p>
         <a class="shop-cta" href="#catalogo">ver o catálogo</a>
       </div>
@@ -107,7 +107,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand-block">
-        <img class="footer-logo" src="img/logo.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
+        <img class="footer-logo" src="/img/logo-footer.webp" alt="VG Store" width="800" height="267" loading="lazy" decoding="async">
         <p class="footer-note">Loja pequena, catálogo curado. Antes de fechar qualquer compra, a gente conversa.</p>
       </div>
       <nav class="footer-nav" aria-label="navegação do rodapé">
@@ -196,6 +196,8 @@
       const category = product.category
         ? `<span class="card-category">${esc(product.category)}</span>`
         : "";
+      const raw = (product.description || "").replace(/\s+/g, " ").trim();
+      const excerpt = raw.length > 150 ? raw.slice(0, 150).replace(/[,;:\s]+$/, "") + "…" : raw;
 
       return `
         <article class="product-card">
@@ -203,10 +205,13 @@
             <img src="${esc(photo)}" alt="${esc(product.name)}" width="1200" height="1500" loading="lazy" decoding="async">
           </a>
           <div class="card-info">
-            ${category}
-            <h3><a href="${href}">${esc(product.name)}</a></h3>
-            ${price}
-            <a class="card-buy" href="${whatsappLink(product)}" target="_blank" rel="noopener">comprar</a>
+            <div class="card-lead">
+              ${category}
+              <h3><a href="${href}">${esc(product.name)}</a></h3>
+              ${price}
+              <a class="card-buy" href="${whatsappLink(product)}" target="_blank" rel="noopener">comprar no WhatsApp</a>
+            </div>
+            ${excerpt ? `<p class="card-desc">${esc(excerpt)}</p>` : ""}
           </div>
         </article>
       `;
@@ -217,23 +222,14 @@
         heroProduct.hidden = true;
         return;
       }
+
       const href = productHref(product);
       const photo = coverOf(product);
-      const price = product.price === null || product.price === undefined
-        ? ""
-        : `<p class="hero-price">${money.format(Number(product.price))}</p>`;
 
       heroProduct.innerHTML = `
-        <a class="hero-photo" href="${href}">
+        <a class="hero-photo" href="${href}" aria-label="${esc(product.name)}">
           <img src="${esc(photo)}" alt="${esc(product.name)}" width="1200" height="900" fetchpriority="high" decoding="async">
         </a>
-        <div class="hero-info">
-          <p class="hero-cat">${esc(product.category || "produto")}</p>
-          <h2 class="hero-name"><a href="${href}">${esc(product.name)}</a></h2>
-          ${price}
-          <a class="btn-wa" href="${whatsappLink(product)}" target="_blank" rel="noopener">comprar no WhatsApp</a>
-          <a class="hero-more" href="${href}">ver detalhes do produto</a>
-        </div>
       `;
       heroProduct.hidden = false;
     }
@@ -262,6 +258,7 @@
       const hasFilters = term || activeCategory !== "todos";
 
       grid.innerHTML = filtered.map(cardMarkup).join("");
+
       document.querySelector(".filter-bar").hidden = allProducts.length < 2;
       grid.classList.toggle("is-solo", filtered.length === 1);
       resultCount.textContent = filtered.length === 1 ? "1 produto" : `${filtered.length} produtos`;

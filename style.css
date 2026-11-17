@@ -4437,3 +4437,347 @@ body.store .card-category {
   text-transform: none !important;
   color: #5f5850 !important;
 }
+
+/* logo real do cliente como selo no header (placa preta aparada) */
+body.store .brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+body.store .brand-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  border-radius: 5px;
+  background: #08080a;
+  padding: 4px 7px;
+  box-sizing: content-box;
+}
+
+body.store .footer-logo {
+  width: 168px;
+  height: auto;
+}
+
+@media (max-width: 720px) {
+  body.store .brand-logo {
+    height: 34px;
+    padding: 3px 6px;
+  }
+}
+
+body.store .brand-logo {
+  height: 38px;
+  width: auto;
+  padding: 0;
+  border-radius: 3px;
+  background: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 720px) {
+  body.store .brand-logo {
+    height: 32px;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  body.store .search {
+    width: min(100%, 460px);
+    justify-self: center;
+  }
+}
+
+/* acabamento 7 — corta o cartão flutuante herdado, rodapé na mesma fonte do site */
+
+body.store .hero-product {
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+body.store .footer-nav a,
+body.store .footer-base,
+body.store .footer-base .mono,
+body.store .footer-admin {
+  font-family: var(--sans) !important;
+}
+
+body.store .footer-nav a {
+  font-size: 0.86rem !important;
+}
+
+body.store .footer-base {
+  color: #a79f97 !important;
+  font-size: 0.78rem !important;
+}
+
+body.store .footer-base .mono {
+  font-size: 0.78rem !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: #a79f97 !important;
+}
+
+body.store .footer-admin {
+  color: #b8b0a8 !important;
+}
+
+body.store .card-buy {
+  padding: 6px 0 4px;
+  min-height: 32px;
+}
+
+body.store .hero-more {
+  margin-top: 14px;
+}
+
+body.store .shop-copy h1 {
+  font-size: clamp(2rem, 3.4vw, 3.1rem);
+}
+
+@media (max-width: 720px) {
+  body.store .shop-copy h1 {
+    font-size: clamp(1.85rem, 8.4vw, 2.4rem);
+  }
+}
+
+/* herói enxuto: só a foto do destaque, o card completo vive no catálogo */
+body.store .hero-product {
+  display: block;
+}
+
+body.store .hero-photo {
+  aspect-ratio: 16 / 11;
+  border-radius: 12px;
+}
+
+body.store .product-grid {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+@media (max-width: 640px) {
+  body.store .hero-photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* item único no catálogo: vitrine horizontal ocupando a faixa */
+body.store .product-grid.is-solo {
+  max-width: none;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.store .product-grid.is-solo .product-card {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(16px, 2.6vw, 34px);
+  padding: clamp(12px, 1.4vw, 18px);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+body.store .product-grid.is-solo .card-media {
+  flex: 0 0 clamp(200px, 32vw, 380px);
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 8px;
+}
+
+body.store .product-grid.is-solo .card-info {
+  gap: 4px;
+  padding-right: clamp(0px, 2vw, 24px);
+}
+
+body.store .product-grid.is-solo .card-info h3 {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-weight: 600;
+}
+
+body.store .product-grid.is-solo .card-price {
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+body.store .product-grid.is-solo .card-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  min-height: 42px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--orange);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.store .product-grid.is-solo .card-buy:hover {
+  background: #d63c00;
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  body.store .product-grid.is-solo .product-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 12px;
+  }
+
+  body.store .product-grid.is-solo .card-media {
+    flex: 1 1 auto;
+  }
+
+  body.store .product-grid.is-solo .card-buy {
+    align-self: stretch;
+  }
+}
+
+/* card: estrutura em duas colunas só quando é o único item */
+body.store .card-lead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body.store .card-desc {
+  display: none;
+}
+
+body.store .product-grid.is-solo .card-info {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(18px, 2.6vw, 36px);
+  width: 100%;
+}
+
+body.store .product-grid.is-solo .card-desc {
+  display: block;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #4f4a44;
+}
+
+body.store .product-grid.is-solo .card-buy {
+  align-self: flex-start;
+}
+
+@media (max-width: 820px) {
+  body.store .product-grid.is-solo .card-info {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
+
+body.store .product-description {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+body.store .shop-cta {
+  font-size: 0.92rem;
+}
+
+body.store .product-note {
+  margin-bottom: 0;
+}
+
+body.store .back-link {
+  margin-top: 26px;
+}
+
+/* responsivo: tablet e celular com medidas próprias */
+@media (max-width: 900px) {
+  body.store .shop-intro {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "product";
+    align-items: start;
+    gap: 22px;
+  }
+
+  body.store .product-grid.is-solo .product-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body.store .product-grid.is-solo .card-media {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  body.store .hero-photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+body.store .hero-photo img {
+  object-fit: contain;
+  padding: 2%;
+}
+
+@media (min-width: 901px) {
+  body.store .hero-photo {
+    aspect-ratio: 16 / 11;
+    max-height: 430px;
+  }
+}
+
+/* no celular/tablet a foto do herói repetiria a do card: só o card mostra */
+@media (max-width: 900px) {
+  body.store .hero-product {
+    display: none !important;
+  }
+
+  body.store .shop-intro {
+    padding-bottom: clamp(22px, 4vw, 32px);
+  }
+
+  body.store .shop-copy h1 {
+    margin-bottom: 14px;
+  }
+
+  body.store .shop-copy p {
+    margin-bottom: 18px;
+  }
+
+  body.store .product-grid.is-solo .card-media {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* contraste e legibilidade */
+body.store .footer-logo {
+  mix-blend-mode: screen;
+}
+
+body.store .header-wa {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 0.86rem !important;
+}
+
+body.store .btn-wa,
+body.store .card-buy,
+body.store .buy-bar .btn-wa {
+  background: #c43a00 !important;
+  border-color: #c43a00 !important;
+  color: #fff !important;
+}
+
+body.store .btn-wa:hover,
+body.store .card-buy:hover {
+  background: #a83200 !important;
+  border-color: #a83200 !important;
+}
