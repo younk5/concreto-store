@@ -4781,3 +4781,20 @@ body.store .card-buy:hover {
   background: #a83200 !important;
   border-color: #a83200 !important;
 }
+
+body.store .section-note {
+  color: #5f5850 !important;
+}
+
+body.store .product-grid.is-solo .card-desc {
+  max-width: 56ch;
+  color: #443f39;
+}
+
+body.store .product-grid.is-solo .card-info {
+  align-items: start;
+}
+
+body.store .product-grid.is-solo .card-desc {
+  padding-top: 26px;
+}
